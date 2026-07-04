@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة إدارة الفخامة للدهن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#201D1A; --ink-soft:#332E28; --canvas:#FAF6EF; --canvas-warm:#F1E7D6;
+    --brass:#B8862E; --terracotta:#B24B32; --teal:#1F5F58; --mustard:#D9A441; --plum:#5B3A5C; --sage:#6E7F52;
+    --muted:#7A7266; --line:rgba(32,29,26,0.10); --shadow:0 10px 30px rgba(32,29,26,0.10);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:'Tajawal',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'El Messiri',serif;margin:0;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  .btn{padding:10px 18px;border-radius:10px;font-weight:700;font-size:14px;}
+  .btn-brass{background:var(--brass);color:#fff;}
+  .btn-ghost{background:transparent;border:1.5px solid #fff;color:#fff;}
+  .admin-top{background:var(--ink);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'El Messiri',serif;font-weight:700;font-size:20px;}
+  .brand-mark{width:30px;height:30px;border-radius:8px;background:conic-gradient(from 200deg,var(--terracotta),var(--mustard),var(--teal),var(--plum));}
+  .admin-body{max-width:1180px;margin:0 auto;padding:30px 24px;}
+  .login-box{max-width:380px;margin:100px auto;background:#fff;padding:36px;border-radius:16px;box-shadow:var(--shadow);text-align:center;}
+  .login-box h2{margin-bottom:6px;}
+  .login-box p{color:var(--muted);font-size:13.5px;margin-bottom:20px;}
+  .field{margin-bottom:16px;text-align:right;}
+  .field label{display:block;font-size:13.5px;font-weight:700;margin-bottom:6px;}
+  .field input, .field select, .field textarea{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);font-family:inherit;font-size:14px;}
+  .field textarea{min-height:80px;resize:vertical;}
+  #loginErr{color:var(--terracotta);font-size:13px;margin-top:10px;display:none;}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px;}
+  .tab-btn{padding:9px 16px;border-radius:10px;background:#fff;border:1.5px solid var(--line);font-weight:700;font-size:13.5px;color:var(--ink);}
+  .tab-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:30px;}
+  .stat-card{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-top:4px solid var(--brass);}
+  .stat-card b{font-family:'El Messiri',serif;font-size:26px;display:block;}
+  .stat-card span{color:var(--muted);font-size:13px;}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+  th,td{padding:12px 14px;text-align:right;font-size:13.5px;border-bottom:1px solid var(--line);}
+  th{background:var(--canvas-warm);font-weight:800;}
+  tr:last-child td{border-bottom:none;}
+  .mini-btn{padding:6px 10px;border-radius:7px;font-size:12px;font-weight:700;margin-left:4px;}
+  .mini-brass{background:var(--brass);color:#fff;}
+  .mini-red{background:#f6dcd4;color:var(--terracotta);}
+  .mini-input{width:70px;padding:6px 8px;border-radius:6px;border:1.5px solid var(--line);}
+  .admin-form{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:24px;}
+  .admin-form h3{margin-bottom:14px;font-size:16px;}
+  .admin-form .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:12px;}
+  .low-flag{color:var(--terracotta);font-weight:800;}
+  .status-select{padding:6px 8px;border-radius:6px;border:1.5px solid var(--line);font-size:12.5px;}
+  .table-wrap{overflow-x:auto;}
+  .empty-row td{text-align:center;color:var(--muted);padding:26px;}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:14px 22px;border-radius:12px;font-weight:700;font-size:14px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .3s;z-index:200;max-width:90vw;text-align:center;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .section-title{margin-bottom:16px;font-size:20px;}
+  .refresh-btn{background:var(--canvas-warm);color:var(--ink);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div id="loginView">
+  <div class="login-box">
+    <div class="brand" style="justify-content:center;color:var(--ink);margin-bottom:16px;"><div class="brand-mark"></div>الفخامة للدهن</div>
+    <h2>دخول الإدارة</h2>
+    <p>هذه الصفحة خاصة بالإدارة فقط، أدخل كلمة المرور للمتابعة.</p>
+    <div class="field"><input type="password" id="adminPass" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn btn-brass" style="width:100%;" onclick="doLogin()">دخول</button>
+    <p id="loginErr">كلمة المرور غير صحيحة</p>
+  </div>
+</div>
+
+<div id="dashView" style="display:none;">
+  <div class="admin-top">
+    <div class="brand"><div class="brand-mark"></div>لوحة إدارة الفخامة للدهن</div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn refresh-btn" onclick="loadAll()">تحديث البيانات ⟳</button>
+      <button class="btn btn-ghost" onclick="logout()">خروج ✕</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">نظرة عامة</button>
+      <button class="tab-btn" data-tab="products" onclick="switchTab('products')">المنتجات والمخزون</button>
+      <button class="tab-btn" data-tab="craftsmen" onclick="switchTab('craftsmen')">الحرفيون</button>
+      <button class="tab-btn" data-tab="orders" onclick="switchTab('orders')">الطلبات</button>
+      <button class="tab-btn" data-tab="messages" onclick="switchTab('messages')">الرسائل</button>
+      <button class="tab-btn" data-tab="finance" onclick="switchTab('finance')">المالية</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-overview">
+      <h3 class="section-title">نظرة عامة</h3>
+      <div class="stat-grid" id="statGrid"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-products">
+      <div class="admin-form">
+        <h3>إضافة منتج جديد</h3>
+        <div class="row">
+          <input type="text" id="pName" placeholder="اسم المنتج">
+          <input type="number" id="pPrice" placeholder="السعر (دج)">
+          <input type="number" id="pStock" placeholder="الكمية بالمخزون">
+        </div>
+        <div class="row">
+          <input type="text" id="pDesc" placeholder="الوصف">
+          <input type="text" id="pColors" placeholder="ألوان (مفصولة بفاصلة) مثال: #B24B32,#1F5F58">
+        </div>
+        <button class="btn btn-brass" onclick="addProduct()">إضافة المنتج</button>
+      </div>
+      <div class="table-wrap">
+        <table id="productsTable">
+          <thead><tr><th>ID</th><th>الاسم</th><th>الوصف</th><th>السعر</th><th>المخزون</th><th>الألوان</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-craftsmen">
+      <div class="table-wrap">
+        <table id="craftsmenTable">
+          <thead><tr><th>ID</th><th>الاسم</th><th>التخصص</th><th>التقييم</th><th>الحالة</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-orders">
+      <div class="table-wrap">
+        <table id="ordersTable">
+          <thead><tr><th>ID</th><th>المنتجات</th><th>الإجمالي</th><th>التاريخ</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-messages">
+      <div class="table-wrap">
+        <table id="messagesTable">
+          <thead><tr><th>ID</th><th>الاسم</th><th>الهاتف</th><th>الحرفي المطلوب</th><th>الرسالة</th><th>التاريخ</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-finance">
+      <div class="admin-form">
+        <h3>إضافة حركة مالية</h3>
+        <div class="row">
+          <select id="fType"><option value="income">دخل</option><option value="expense">مصروف</option></select>
+          <input type="text" id="fLabel" placeholder="الوصف">
+          <input type="number" id="fAmount" placeholder="المبلغ (دج)">
+        </div>
+        <button class="btn btn-brass" onclick="addFinance()">إضافة</button>
+      </div>
+      <div class="table-wrap">
+        <table id="financeTable">
+          <thead><tr><th>ID</th><th>النوع</th><th>الوصف</th><th>المبلغ</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ====== رابط الويب أب — يجب أن يكون نفس الرابط الموجود في index.html ====== */
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwSUFCCNdLDlbjzoQ7Jgl3P_9LKLq3HbiGfCg6ojOUux1aaq586u_iZ0wYhi0aGr3K5/exec";
+
+/* ====== نفس القيمة الموجودة في المتغير ADMIN_KEY داخل ملف Apps Script ======
+   غيّرها هناك وهنا معًا. لا تضع هذا الملف في مكان عام يمكن لأي شخص الوصول إليه. */
+const ADMIN_KEY = "alfakhama-2026-x7q";
+
+let DATA = { products:[], craftsmen:[], orders:[], messages:[], finance:[] };
+
+function doLogin(){
+  const val = document.getElementById('adminPass').value;
+  if(val === ADMIN_KEY){
+    document.getElementById('loginView').style.display = 'none';
+    document.getElementById('dashView').style.display = 'block';
+    loadAll();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+function logout(){
+  document.getElementById('dashView').style.display = 'none';
+  document.getElementById('loginView').style.display = 'block';
+  document.getElementById('adminPass').value = '';
+}
+
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='tab-'+name));
+}
+
+/* ---------- تحميل كل البيانات (يتطلب المفتاح السري) ---------- */
+async function loadAll(){
+  try{
+    const res = await fetch(SHEET_API_URL + '?key=' + encodeURIComponent(ADMIN_KEY));
+    const data = await res.json();
+    if(data.error === 'unauthorized'){ showToast('المفتاح السري غير صحيح في هذا الملف'); return; }
+    DATA.products = (data.products||[]).map(p=>({...p, price:Number(p.price)||0, stock:Number(p.stock)||0}));
+    DATA.craftsmen = data.craftsmen || [];
+    DATA.orders = data.orders || [];
+    DATA.messages = data.messages || [];
+    DATA.finance = (data.finance||[]).map(f=>({...f, amount:Number(f.amount)||0}));
+    renderOverview();
+    renderProducts();
+    renderCraftsmen();
+    renderOrders();
+    renderMessages();
+    renderFinance();
+    showToast('تم تحديث البيانات ✅');
+  }catch(err){
+    showToast('تعذّر تحميل البيانات، تحقق من الاتصال');
+    console.error(err);
+  }
+}
+
+async function callApi(payload){
+  payload.key = ADMIN_KEY;
+  const res = await fetch(SHEET_API_URL, { method:'POST', body: JSON.stringify(payload) });
+  return res.json();
+}
+
+/* ---------- نظرة عامة ---------- */
+function renderOverview(){
+  const income = DATA.finance.filter(f=>f.type==='income').reduce((s,f)=>s+f.amount,0);
+  const expense = DATA.finance.filter(f=>f.type==='expense').reduce((s,f)=>s+f.amount,0);
+  const lowStock = DATA.products.filter(p=>p.stock<=5).length;
+  const grid = document.getElementById('statGrid');
+  grid.innerHTML = `
+    <div class="stat-card"><b>${DATA.products.length}</b><span>عدد المنتجات</span></div>
+    <div class="stat-card"><b>${DATA.craftsmen.length}</b><span>عدد الحرفيين</span></div>
+    <div class="stat-card"><b>${DATA.orders.length}</b><span>عدد الطلبات</span></div>
+    <div class="stat-card"><b>${DATA.messages.length}</b><span>عدد الرسائل</span></div>
+    <div class="stat-card"><b>${(income-expense).toLocaleString('ar-DZ')} دج</b><span>الرصيد الحالي</span></div>
+    <div class="stat-card" style="border-top-color:var(--terracotta);"><b class="${lowStock>0?'low-flag':''}">${lowStock}</b><span>منتجات بمخزون منخفض</span></div>
+  `;
+}
+
+/* ---------- المنتجات ---------- */
+function renderProducts(){
+  const tbody = document.querySelector('#productsTable tbody');
+  if(DATA.products.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="7">لا توجد منتجات</td></tr>'; return; }
+  tbody.innerHTML = DATA.products.map(p=>`
+    <tr>
+      <td>${p.id}</td>
+      <td>${escapeHtml(p.name)}</td>
+      <td>${escapeHtml(p.desc||'')}</td>
+      <td>${p.price.toLocaleString('ar-DZ')} دج</td>
+      <td>
+        <input class="mini-input" type="number" value="${p.stock}" id="stock-${p.id}">
+        <button class="mini-btn mini-brass" onclick="updateStock(${p.id})">حفظ</button>
+        ${p.stock<=5?'<span class="low-flag"> منخفض</span>':''}
+      </td>
+      <td>${escapeHtml(p.colors||'')}</td>
+      <td><button class="mini-btn mini-red" onclick="deleteProduct(${p.id})">حذف</button></td>
+    </tr>`).join('');
+}
+
+async function addProduct(){
+  const name = document.getElementById('pName').value.trim();
+  const price = Number(document.getElementById('pPrice').value);
+  const stock = Number(document.getElementById('pStock').value);
+  const desc = document.getElementById('pDesc').value.trim();
+  const colors = document.getElementById('pColors').value.split(',').map(c=>c.trim()).filter(Boolean);
+  if(!name || !price){ showToast('يرجى إدخال اسم وسعر المنتج'); return; }
+  const res = await callApi({ action:'addProduct', name, price, stock:stock||0, desc, colors });
+  if(res.ok){
+    ['pName','pPrice','pStock','pDesc','pColors'].forEach(id=>document.getElementById(id).value='');
+    showToast('تمت إضافة المنتج ✅');
+    loadAll();
+  } else showToast('حدث خطأ أثناء الإضافة');
+}
+
+async function updateStock(id){
+  const val = Number(document.getElementById('stock-'+id).value);
+  const res = await callApi({ action:'updateStock', id, stock:val });
+  if(res.ok){ showToast('تم تحديث المخزون ✅'); loadAll(); }
+  else showToast('حدث خطأ أثناء التحديث');
+}
+
+async function deleteProduct(id){
+  if(!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
+  const res = await callApi({ action:'deleteProduct', id });
+  if(res.ok){ showToast('تم حذف المنتج ✅'); loadAll(); }
+  else showToast('حدث خطأ أثناء الحذف');
+}
+
+/* ---------- الحرفيون ---------- */
+const STATUS_LABEL = { free:'متاح الآن', busy:'مشغول', tomorrow:'متاح غدًا' };
+function renderCraftsmen(){
+  const tbody = document.querySelector('#craftsmenTable tbody');
+  if(DATA.craftsmen.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="5">لا يوجد حرفيون</td></tr>'; return; }
+  tbody.innerHTML = DATA.craftsmen.map(c=>`
+    <tr>
+      <td>${c.id}</td>
+      <td>${escapeHtml(c.name)}</td>
+      <td>${escapeHtml(c.spec||'')}</td>
+      <td>${c.rating}</td>
+      <td>
+        <select class="status-select" onchange="updateCraftStatus(${c.id}, this.value)">
+          <option value="free" ${c.status==='free'?'selected':''}>متاح الآن</option>
+          <option value="busy" ${c.status==='busy'?'selected':''}>مشغول</option>
+          <option value="tomorrow" ${c.status==='tomorrow'?'selected':''}>متاح غدًا</option>
+        </select>
+      </td>
+    </tr>`).join('');
+}
+async function updateCraftStatus(id, status){
+  const res = await callApi({ action:'updateCraftStatus', id, status });
+  if(res.ok) showToast('تم تحديث حالة الحرفي ✅');
+  else showToast('حدث خطأ أثناء التحديث');
+}
+
+/* ---------- الطلبات ---------- */
+function renderOrders(){
+  const tbody = document.querySelector('#ordersTable tbody');
+  if(DATA.orders.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="4">لا توجد طلبات بعد</td></tr>'; return; }
+  tbody.innerHTML = DATA.orders.slice().reverse().map(o=>{
+    let items = [];
+    try{ items = JSON.parse(o.itemsJson); }catch(e){}
+    const itemsText = items.map(i=>`${escapeHtml(i.name)} × ${i.qty}`).join('، ');
+    return `<tr>
+      <td>${o.id}</td>
+      <td>${itemsText}</td>
+      <td>${Number(o.total).toLocaleString('ar-DZ')} دج</td>
+      <td>${formatDate(o.date)}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ---------- الرسائل ---------- */
+function renderMessages(){
+  const tbody = document.querySelector('#messagesTable tbody');
+  if(DATA.messages.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="6">لا توجد رسائل بعد</td></tr>'; return; }
+  tbody.innerHTML = DATA.messages.slice().reverse().map(m=>`
+    <tr>
+      <td>${m.id}</td>
+      <td>${escapeHtml(m.name)}</td>
+      <td>${escapeHtml(m.phone)}</td>
+      <td>${escapeHtml(m.craft||'-')}</td>
+      <td>${escapeHtml(m.msg)}</td>
+      <td>${formatDate(m.date)}</td>
+    </tr>`).join('');
+}
+
+/* ---------- المالية ---------- */
+function renderFinance(){
+  const tbody = document.querySelector('#financeTable tbody');
+  if(DATA.finance.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="4">لا توجد حركات مالية</td></tr>'; return; }
+  tbody.innerHTML = DATA.finance.slice().reverse().map(f=>`
+    <tr>
+      <td>${f.id}</td>
+      <td>${f.type==='income'?'دخل':'مصروف'}</td>
+      <td>${escapeHtml(f.label)}</td>
+      <td>${f.amount.toLocaleString('ar-DZ')} دج</td>
+    </tr>`).join('');
+}
+async function addFinance(){
+  const type = document.getElementById('fType').value;
+  const label = document.getElementById('fLabel').value.trim();
+  const amount = Number(document.getElementById('fAmount').value);
+  if(!label || !amount){ showToast('يرجى إدخال الوصف والمبلغ'); return; }
+  const res = await callApi({ action:'addFinance', type, label, amount });
+  if(res.ok){
+    document.getElementById('fLabel').value=''; document.getElementById('fAmount').value='';
+    showToast('تمت إضافة الحركة المالية ✅');
+    loadAll();
+  } else showToast('حدث خطأ أثناء الإضافة');
+}
+
+/* ---------- أدوات مساعدة ---------- */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+function escapeHtml(str){
+  return String(str??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function formatDate(iso){
+  const d = new Date(iso);
+  if(isNaN(d)) return iso;
+  return d.toLocaleString('ar-DZ');
+}
+</script>
+</body>
+</html>
