@@ -26,32 +26,16 @@
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--canvas);
-    color:var(--ink);
-    font-family:'Tajawal',sans-serif;
-    line-height:1.6;
-  }
-  h1,h2,h3,.display{
-    font-family:'El Messiri',serif;
-    margin:0;
-  }
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:'Tajawal',sans-serif;line-height:1.6;}
+  h1,h2,h3,.display{font-family:'El Messiri',serif;margin:0;}
   a{color:inherit;text-decoration:none;}
   button{font-family:inherit;cursor:pointer;border:none;}
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
-  .eyebrow{
-    font-size:13px;letter-spacing:.5px;color:var(--brass);
-    font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:10px;
-  }
+  .eyebrow{font-size:13px;letter-spacing:.5px;color:var(--brass);font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:10px;}
   .eyebrow::before{content:"";width:26px;height:2px;background:var(--brass);display:inline-block;}
   .stripe{height:6px;width:100%;background:linear-gradient(90deg,var(--terracotta),var(--mustard),var(--teal),var(--plum),var(--sage));}
 
-  /* HEADER */
-  header{
-    position:sticky;top:0;z-index:60;background:rgba(250,246,239,0.92);backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
+  header{position:sticky;top:0;z-index:60;background:rgba(250,246,239,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
   .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1180px;margin:0 auto;}
   .brand{display:flex;align-items:center;gap:10px;font-family:'El Messiri',serif;font-weight:700;font-size:22px;}
   .brand-mark{width:34px;height:34px;border-radius:8px;background:conic-gradient(from 200deg,var(--terracotta),var(--mustard),var(--teal),var(--plum));box-shadow:var(--shadow);}
@@ -59,27 +43,17 @@
   .nav-links a{font-size:15px;font-weight:500;color:var(--ink-soft);transition:color .2s;}
   .nav-links a:hover{color:var(--brass);}
   .nav-actions{display:flex;gap:10px;align-items:center;}
-  .btn{
-    padding:10px 18px;border-radius:10px;font-weight:700;font-size:14px;transition:transform .15s, box-shadow .15s;
-  }
+  .btn{padding:10px 18px;border-radius:10px;font-weight:700;font-size:14px;transition:transform .15s, box-shadow .15s;}
   .btn:active{transform:scale(.97);}
   .btn-brass{background:var(--brass);color:#fff;}
   .btn-brass:hover{box-shadow:0 6px 16px rgba(184,134,46,.35);}
   .btn-ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink);}
   .btn-ghost:hover{background:var(--ink);color:#fff;}
   .cart-btn{position:relative;}
-  .cart-count{
-    position:absolute;top:-8px;left:-8px;background:var(--terracotta);color:#fff;
-    font-size:11px;font-weight:800;width:19px;height:19px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-  }
+  .cart-count{position:absolute;top:-8px;left:-8px;background:var(--terracotta);color:#fff;font-size:11px;font-weight:800;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
   .burger{display:none;font-size:22px;background:none;color:var(--ink);}
-  @media(max-width:900px){
-    .nav-links{display:none;}
-    .burger{display:block;}
-  }
+  @media(max-width:900px){.nav-links{display:none;} .burger{display:block;}}
 
-  /* HERO */
   .hero{padding:70px 0 40px;overflow:hidden;}
   .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;}
   @media(max-width:900px){.hero-grid{grid-template-columns:1fr;}}
@@ -91,13 +65,8 @@
   .hero-stat b{font-family:'El Messiri',serif;font-size:26px;display:block;}
   .hero-stat span{font-size:13px;color:var(--muted);}
 
-  /* swatch fan signature */
   .fan{position:relative;height:380px;display:flex;align-items:center;justify-content:center;}
-  .chip{
-    position:absolute;width:150px;height:220px;border-radius:16px;box-shadow:0 18px 40px rgba(32,29,26,.22);
-    display:flex;flex-direction:column;justify-content:flex-end;padding:14px;color:#fff;font-weight:700;font-size:14px;
-    transition:transform .35s ease;
-  }
+  .chip{position:absolute;width:150px;height:220px;border-radius:16px;box-shadow:0 18px 40px rgba(32,29,26,.22);display:flex;flex-direction:column;justify-content:flex-end;padding:14px;color:#fff;font-weight:700;font-size:14px;transition:transform .35s ease;}
   .chip:hover{transform:translateY(-14px) !important;}
   .chip small{display:block;font-weight:400;font-size:11px;opacity:.85;margin-top:2px;font-family:'Tajawal';}
   .chip.c1{background:linear-gradient(160deg,var(--terracotta),#8f3a25);transform:rotate(-18deg) translateX(70px);z-index:1;}
@@ -110,7 +79,6 @@
   .section-head h2{font-size:34px;}
   .section-head p{color:var(--muted);max-width:420px;font-size:15px;}
 
-  /* PRODUCTS */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:22px;}
   .card{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);}
   .p-top{height:90px;position:relative;}
@@ -124,10 +92,11 @@
   .stock-tag{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700;}
   .stock-ok{background:#e7f0e1;color:var(--sage);}
   .stock-low{background:#fbe9e4;color:var(--terracotta);}
+  .stock-out{background:#eee;color:#999;}
   .add-btn{width:100%;margin-top:12px;padding:10px;border-radius:10px;background:var(--ink);color:#fff;font-weight:700;font-size:14px;}
   .add-btn:hover{background:var(--brass);}
+  .add-btn:disabled{background:#ccc;cursor:not-allowed;}
 
-  /* CRAFTSMEN */
   .craft-card{background:var(--card);border-radius:16px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--line);display:flex;gap:14px;}
   .avatar{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px;flex-shrink:0;font-family:'El Messiri',serif;}
   .craft-info{flex:1;}
@@ -136,31 +105,27 @@
   .badge{font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;}
   .badge-free{background:#e7f0e1;color:var(--sage);}
   .badge-busy{background:#f2e6ce;color:#8a6a1f;}
-  .badge-tom{background:#e6edf2;color:#33566e;}
+  .badge-tomorrow{background:#e6edf2;color:#33566e;}
   .stars{color:var(--brass);font-size:13px;margin-top:6px;}
   .craft-actions{margin-top:10px;}
   .craft-actions button{padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:700;background:var(--brass);color:#fff;}
 
-  /* GALLERY */
   .gal-card{border-radius:16px;overflow:hidden;box-shadow:var(--shadow);position:relative;height:210px;}
   .gal-fill{position:absolute;inset:0;}
   .gal-caption{position:absolute;bottom:0;right:0;left:0;padding:14px;background:linear-gradient(0deg,rgba(0,0,0,.6),transparent);color:#fff;font-weight:700;font-size:14px;}
 
-  /* REVIEWS */
   .rev-card{background:var(--card);border-radius:16px;padding:22px;box-shadow:var(--shadow);border:1px solid var(--line);}
   .rev-head{display:flex;gap:12px;align-items:center;margin-bottom:12px;}
+  .rev-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-family:'El Messiri',serif;}
   .rev-head b{display:block;font-size:14.5px;}
   .rev-head span{color:var(--muted);font-size:12px;}
   .rev-txt{color:var(--ink-soft);font-size:14.5px;}
 
-  /* CONTACT */
   .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;}
   @media(max-width:900px){.contact-grid{grid-template-columns:1fr;}}
   .field{margin-bottom:16px;}
   .field label{display:block;font-size:13.5px;font-weight:700;margin-bottom:6px;}
-  .field input,.field textarea,.field select{
-    width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-family:inherit;font-size:14px;
-  }
+  .field input,.field textarea,.field select{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-family:inherit;font-size:14px;}
   .field textarea{min-height:110px;resize:vertical;}
   .info-card{background:var(--ink);color:#fff;border-radius:18px;padding:32px;}
   .info-card h3{font-size:22px;margin-bottom:14px;}
@@ -171,21 +136,12 @@
   .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:24px;}
   .foot-copy{border-top:1px solid rgba(255,255,255,.12);padding-top:16px;font-size:12.5px;text-align:center;}
 
-  /* TOAST */
-  .toast{
-    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
-    background:var(--ink);color:#fff;padding:14px 22px;border-radius:12px;font-weight:700;font-size:14px;
-    box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .3s;z-index:200;
-  }
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:14px 22px;border-radius:12px;font-weight:700;font-size:14px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:all .3s;z-index:200;max-width:90vw;text-align:center;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  /* CART DRAWER */
   .overlay{position:fixed;inset:0;background:rgba(32,29,26,.5);z-index:90;display:none;}
   .overlay.show{display:block;}
-  .drawer{
-    position:fixed;top:0;left:0;height:100%;width:380px;max-width:90vw;background:#fff;z-index:100;
-    transform:translateX(-100%);transition:transform .3s;display:flex;flex-direction:column;box-shadow:var(--shadow);
-  }
+  .drawer{position:fixed;top:0;left:0;height:100%;width:380px;max-width:90vw;background:#fff;z-index:100;transform:translateX(-100%);transition:transform .3s;display:flex;flex-direction:column;box-shadow:var(--shadow);}
   .drawer.show{transform:translateX(0);}
   .drawer-head{padding:20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
   .drawer-body{flex:1;overflow-y:auto;padding:20px;}
@@ -199,33 +155,9 @@
   .total-row{display:flex;justify-content:space-between;font-weight:800;font-size:16px;margin-bottom:14px;}
   .empty-note{color:var(--muted);text-align:center;padding:40px 0;font-size:14px;}
   .close-x{background:none;font-size:20px;color:var(--muted);}
-
-  /* ADMIN */
-  .admin-overlay{position:fixed;inset:0;background:var(--canvas);z-index:150;display:none;overflow-y:auto;}
-  .admin-overlay.show{display:block;}
-  .admin-top{background:var(--ink);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
-  .admin-top .brand{color:#fff;}
-  .admin-body{max-width:1180px;margin:0 auto;padding:30px 24px;}
-  .login-box{max-width:360px;margin:80px auto;background:#fff;padding:34px;border-radius:16px;box-shadow:var(--shadow);text-align:center;}
-  .login-box h2{margin-bottom:6px;}
-  .login-box p{color:var(--muted);font-size:13.5px;margin-bottom:20px;}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px;}
-  .tab-btn{padding:9px 16px;border-radius:10px;background:#fff;border:1.5px solid var(--line);font-weight:700;font-size:13.5px;}
-  .tab-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
-  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:30px;}
-  .stat-card{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-top:4px solid var(--brass);}
-  .stat-card b{font-family:'El Messiri',serif;font-size:26px;display:block;}
-  .stat-card span{color:var(--muted);font-size:13px;}
-  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
-  th,td{padding:12px 14px;text-align:right;font-size:13.5px;border-bottom:1px solid var(--line);}
-  th{background:var(--canvas-warm);font-weight:800;}
-  .mini-btn{padding:6px 10px;border-radius:7px;font-size:12px;font-weight:700;}
-  .mini-brass{background:var(--brass);color:#fff;}
-  .mini-red{background:#f6dcd4;color:var(--terracotta);}
-  .mini-input{width:70px;padding:6px 8px;border-radius:6px;border:1.5px solid var(--line);}
-  .admin-form{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:24px;}
-  .admin-form .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
-  .low-flag{color:var(--terracotta);font-weight:800;}
+  .skeleton{background:linear-gradient(90deg,#eee,#f5f5f5,#eee);background-size:200% 100%;animation:sk 1.2s infinite;border-radius:8px;height:14px;margin:6px 0;}
+  @keyframes sk{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+  .load-note{color:var(--muted);font-size:14px;padding:20px 0;text-align:center;grid-column:1/-1;}
 </style>
 </head>
 <body>
@@ -241,14 +173,12 @@
       <a href="#contact">تواصل معنا</a>
     </nav>
     <div class="nav-actions">
-      <button class="btn btn-ghost" onclick="openAdmin()">لوحة الإدارة</button>
       <button class="btn btn-brass cart-btn" onclick="toggleCart(true)">السلة <span class="cart-count" id="cartCount">0</span></button>
     </div>
   </div>
   <div class="stripe"></div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
@@ -261,8 +191,8 @@
       </div>
       <div class="hero-stats">
         <div class="hero-stat"><b>+18</b><span>سنة خبرة</span></div>
-        <div class="hero-stat"><b>+40</b><span>درجة لون</span></div>
-        <div class="hero-stat"><b>12</b><span>حرفي معتمد</span></div>
+        <div class="hero-stat"><b id="statColors">+40</b><span>درجة لون</span></div>
+        <div class="hero-stat"><b id="statCraftsmen">12</b><span>حرفي معتمد</span></div>
       </div>
     </div>
     <div class="fan">
@@ -274,62 +204,43 @@
   </div>
 </section>
 
-<!-- PRODUCTS -->
 <section id="products">
   <div class="wrap">
     <div class="section-head">
-      <div>
-        <div class="eyebrow">المنتجات</div>
-        <h2>دهاناتنا</h2>
-      </div>
+      <div><div class="eyebrow">المنتجات</div><h2>دهاناتنا</h2></div>
       <p>كل منتج يعرض المخزون المتاح فورًا حسب بيانات المستودع.</p>
     </div>
-    <div class="grid" id="productsGrid"></div>
+    <div class="grid" id="productsGrid"><div class="load-note">جاري تحميل المنتجات...</div></div>
   </div>
 </section>
 
-<!-- CRAFTSMEN -->
 <section id="craftsmen" style="background:var(--canvas-warm);">
   <div class="wrap">
     <div class="section-head">
-      <div>
-        <div class="eyebrow">فريق التنفيذ</div>
-        <h2>الحرفيون المتوفرون</h2>
-      </div>
+      <div><div class="eyebrow">فريق التنفيذ</div><h2>الحرفيون المتوفرون</h2></div>
       <p>اختر حرفيًا حسب التخصص والتوفر، وسيتم تجهيز طلبك مباشرة.</p>
     </div>
-    <div class="grid" id="craftsmenGrid"></div>
+    <div class="grid" id="craftsmenGrid"><div class="load-note">جاري تحميل الحرفيين...</div></div>
   </div>
 </section>
 
-<!-- GALLERY -->
 <section id="gallery">
   <div class="wrap">
     <div class="section-head">
-      <div>
-        <div class="eyebrow">معرض الأعمال</div>
-        <h2>من أعمالنا السابقة</h2>
-      </div>
+      <div><div class="eyebrow">معرض الأعمال</div><h2>من أعمالنا السابقة</h2></div>
       <p>لمحات من مشاريع نفذها فريقنا لعملاء الفخامة للدهن.</p>
     </div>
     <div class="grid" id="galleryGrid"></div>
   </div>
 </section>
 
-<!-- REVIEWS -->
 <section id="reviews" style="background:var(--canvas-warm);">
   <div class="wrap">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">آراء العملاء</div>
-        <h2>ماذا يقولون عنا</h2>
-      </div>
-    </div>
+    <div class="section-head"><div><div class="eyebrow">آراء العملاء</div><h2>ماذا يقولون عنا</h2></div></div>
     <div class="grid" id="reviewsGrid"></div>
   </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact">
   <div class="wrap contact-grid">
     <div>
@@ -342,7 +253,7 @@
           <select id="cCraft"><option value="">بدون تحديد</option></select>
         </div>
         <div class="field"><label>تفاصيل الطلب</label><textarea required id="cMsg" placeholder="اكتب تفاصيل ما تحتاجه..."></textarea></div>
-        <button class="btn btn-brass" type="submit" style="width:100%;">إرسال الطلب</button>
+        <button class="btn btn-brass" type="submit" style="width:100%;" id="contactSubmitBtn">إرسال الطلب</button>
       </form>
     </div>
     <div class="info-card">
@@ -366,517 +277,87 @@
         <a href="#products">المنتجات</a><a href="#craftsmen">الحرفيون</a><a href="#gallery">أعمالنا</a><a href="#contact">تواصل معنا</a>
       </div>
     </div>
-    <div>
-      <b style="color:#fff;">الإدارة</b>
-      <div style="margin-top:10px;"><button class="btn btn-ghost" style="border-color:#fff;color:#fff;" onclick="openAdmin()">دخول لوحة التحكم</button></div>
-    </div>
   </div>
   <div class="foot-copy">© 2026 الفخامة للدهن. جميع الحقوق محفوظة.</div>
 </footer>
 
 <div class="toast" id="toast"></div>
 
-<!-- CART DRAWER -->
 <div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-head"><h3>سلة الطلبات</h3><button class="close-x" onclick="toggleCart(false)">✕</button></div>
   <div class="drawer-body" id="cartBody"></div>
   <div class="drawer-foot">
     <div class="total-row"><span>الإجمالي</span><span id="cartTotal">0 دج</span></div>
-    <button class="btn btn-brass" style="width:100%;" onclick="confirmOrder()">تأكيد الطلب</button>
-  </div>
-</div>
-
-<!-- ADMIN PANEL -->
-<div class="admin-overlay" id="adminOverlay">
-  <div class="admin-top">
-    <div class="brand">لوحة إدارة الفخامة للدهن</div>
-    <button class="btn btn-ghost" style="border-color:#fff;color:#fff;" onclick="closeAdmin()">إغلاق ✕</button>
-  </div>
-  <div class="admin-body">
-    <div id="loginView">
-      <div class="login-box">
-        <h2>دخول الإدارة</h2>
-        <p>كلمة المرور التجريبية: <b>admin123</b></p>
-        <div class="field"><input type="password" id="adminPass" placeholder="كلمة المرور"></div>
-        <button class="btn btn-brass" style="width:100%;" onclick="doLogin()">دخول</button>
-        <p id="loginErr" style="color:var(--terracotta);font-size:13px;margin-top:10px;display:none;">كلمة المرور غير صحيحة</p>
-      </div>
-    </div>
-    <div id="dashView" style="display:none;">
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">نظرة عامة</button>
-        <button class="tab-btn" data-tab="products" onclick="switchTab('products')">المنتجات</button>
-        <button class="tab-btn" data-tab="warehouse" onclick="switchTab('warehouse')">المستودع والمخزون</button>
-        <button class="tab-btn" data-tab="finance" onclick="switchTab('finance')">المصريف (الإيرادات والمصروفات)</button>
-        <button class="tab-btn" data-tab="orders" onclick="switchTab('orders')">الطلبات</button>
-        <button class="tab-btn" data-tab="craftsmen" onclick="switchTab('craftsmen')">الحرفيون</button>
-        <button class="tab-btn" data-tab="messages" onclick="switchTab('messages')">الرسائل</button>
-      </div>
-      <div id="tabContent"></div>
-    </div>
+    <button class="btn btn-brass" style="width:100%;" onclick="confirmOrder()" id="confirmOrderBtn">تأكيد الطلب</button>
   </div>
 </div>
 
 <script>
-/* ================= إعداد الاتصال بجوجل شيت ================= */
-/* الصق هنا رابط الـ Web App الذي حصلت عليه بعد نشر Apps Script */
+/* ====== رابط الويب أب الخاص بجوجل شيت (نفس الرابط في admin.html) ====== */
 const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwSUFCCNdLDlbjzoQ7Jgl3P_9LKLq3HbiGfCg6ojOUux1aaq586u_iZ0wYhi0aGr3K5/exec";
-const SYNC_ENABLED = SHEET_API_URL.startsWith('https://');
 
-/* ================= STATE (تُملأ من جوجل شيت أو بيانات افتراضية) ================= */
-let products = [
-  {id:1, name:'دهان لامع فاخر', desc:'لمعان عالي يدوم لسنوات، مثالي للصالونات', price:3200, stock:24, colors:['#B24B32','#1F5F58','#D9A441'], top:'linear-gradient(120deg,#B24B32,#8f3a25)'},
-  {id:2, name:'دهان مطفي عصري', desc:'مظهر أنيق غير عاكس، يخفي عيوب الجدار', price:2900, stock:8, colors:['#5B3A5C','#6E7F52','#7A7266'], top:'linear-gradient(120deg,#5B3A5C,#3d2740)'},
-  {id:3, name:'دهان خارجي مقاوم', desc:'مقاومة كاملة للشمس والرطوبة والأمطار', price:4100, stock:15, colors:['#1F5F58','#D9A441','#B24B32'], top:'linear-gradient(120deg,#1F5F58,#123f3a)'},
-  {id:4, name:'ورنيش خشب طبيعي', desc:'حماية ولمعان طبيعي للأبواب والأثاث', price:2600, stock:4, colors:['#8a5a2f','#5a3a1f'], top:'linear-gradient(120deg,#B8862E,#8a5a2f)'},
-  {id:5, name:'ديكور جبس وحائط', desc:'تشطيبات جبسية عصرية بلمسات فنية', price:5200, stock:11, colors:['#D9AF5D','#F1E7D6','#7A7266'], top:'linear-gradient(120deg,#D9AF5D,#B8862E)'},
-  {id:6, name:'طلاء معدني لامع', desc:'تأثير معدني فاخر للواجهات المميزة', price:4700, stock:6, colors:['#6E7F52','#B24B32','#1F5F58'], top:'linear-gradient(120deg,#332E28,#201D1A)'},
-];
+let PRODUCTS = [];
+let CRAFTSMEN = [];
+let CART = []; // {id,name,price,color,qty}
 
-let craftsmen = [
-  {id:1, name:'كريم بوزيان', spec:'دهان داخلي وديكور جبسي', rating:4.9, status:'free', color:'#B24B32'},
-  {id:2, name:'ياسين العايب', spec:'دهان خارجي وواجهات', rating:4.7, status:'busy', color:'#1F5F58'},
-  {id:3, name:'محمد شريف', spec:'ورنيش وأخشاب فاخرة', rating:4.8, status:'tomorrow', color:'#5B3A5C'},
-  {id:4, name:'عبد الرزاق حمدي', spec:'طلاء معدني وتأثيرات خاصة', rating:5.0, status:'free', color:'#D9A441'},
-];
+const STATUS_LABEL = { free:'متاح الآن', busy:'مشغول', tomorrow:'متاح غدًا' };
+const STATUS_CLASS = { free:'badge-free', busy:'badge-busy', tomorrow:'badge-tomorrow' };
 
-let orders = [];
-let messages = [];
-let finance = [
-  {id:1, type:'income', label:'مبيعات الأسبوع', amount:38000},
-  {id:2, type:'expense', label:'شراء مواد خام', amount:12500},
-];
-let cart = []; // {productId, qty}
-
-/* ================= مزامنة جوجل شيت ================= */
-async function postToSheet(action, payload){
-  if(!SYNC_ENABLED) return {ok:false};
-  try{
-    const res = await fetch(SHEET_API_URL, {
-      method:'POST',
-      body: JSON.stringify({action, ...payload})
-    });
-    return await res.json();
-  }catch(err){
-    console.error('خطأ في الاتصال بجوجل شيت', err);
-    showToast('تعذر الاتصال بجوجل شيت، تم الحفظ محليًا فقط');
-    return {ok:false};
-  }
-}
-
-async function loadFromSheet(){
-  if(!SYNC_ENABLED) return;
+/* ---------- تحميل البيانات الحقيقية من جوجل شيت ---------- */
+async function loadData(){
   try{
     const res = await fetch(SHEET_API_URL);
     const data = await res.json();
-    if(data.products && data.products.length){
-      products = data.products.map(p=>({
-        id:Number(p.id), name:p.name, desc:p.desc, price:Number(p.price), stock:Number(p.stock),
-        colors:(p.colors||'').split(',').filter(Boolean),
-        top:p.top || 'linear-gradient(120deg,#332E28,#201D1A)'
-      }));
-    }
-    if(data.craftsmen && data.craftsmen.length){
-      craftsmen = data.craftsmen.map(c=>({
-        id:Number(c.id), name:c.name, spec:c.spec, rating:Number(c.rating), status:c.status, color:c.color
-      }));
-    }
-    if(data.orders){
-      orders = data.orders.map(o=>({
-        id:Number(o.id), items:JSON.parse(o.itemsJson||'[]'), total:Number(o.total), date:o.date
-      }));
-    }
-    if(data.messages){ messages = data.messages; }
-    if(data.finance && data.finance.length){
-      finance = data.finance.map(f=>({id:Number(f.id), type:f.type, label:f.label, amount:Number(f.amount)}));
-    }
-    renderProducts(); renderCraftsmen(); renderCart();
-    showToast('تم تحميل البيانات من جوجل شيت ✅');
+    PRODUCTS = (data.products || []).map(p => ({
+      ...p,
+      price: Number(p.price) || 0,
+      stock: Number(p.stock) || 0,
+      colors: typeof p.colors === 'string' ? p.colors.split(',').filter(Boolean) : (p.colors||[])
+    }));
+    CRAFTSMEN = data.craftsmen || [];
+    renderProducts();
+    renderCraftsmen();
+    populateCraftSelect();
+    document.getElementById('statColors').textContent = '+' + PRODUCTS.reduce((s,p)=>s+p.colors.length,0);
+    document.getElementById('statCraftsmen').textContent = CRAFTSMEN.length;
   }catch(err){
+    document.getElementById('productsGrid').innerHTML = '<div class="load-note">تعذّر تحميل البيانات. تحقق من الاتصال بالإنترنت وحاول تحديث الصفحة.</div>';
+    document.getElementById('craftsmenGrid').innerHTML = '';
     console.error(err);
-    showToast('تعذر تحميل البيانات من جوجل شيت، تُعرض بيانات افتراضية');
   }
 }
 
-/* ================= HELPERS ================= */
-function fmt(n){ return n.toLocaleString('ar-DZ') + ' دج'; }
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2200);
-}
-function statusInfo(s){
-  if(s==='free') return {label:'متاح الآن', cls:'badge-free'};
-  if(s==='busy') return {label:'مشغول اليوم', cls:'badge-busy'};
-  return {label:'متاح غدًا', cls:'badge-tom'};
-}
-function stars(r){
-  const full = Math.round(r);
-  return '★'.repeat(full) + '☆'.repeat(5-full) + '  ' + r;
-}
-
-/* ================= RENDER: PRODUCTS ================= */
 function renderProducts(){
   const grid = document.getElementById('productsGrid');
-  grid.innerHTML = products.map(p=>{
-    const low = p.stock <= 5;
-    return `<div class="card">
-      <div class="p-top" style="background:${p.top}"></div>
+  if(PRODUCTS.length === 0){ grid.innerHTML = '<div class="load-note">لا توجد منتجات متاحة حاليًا.</div>'; return; }
+  grid.innerHTML = PRODUCTS.map(p=>{
+    const stockClass = p.stock<=0 ? 'stock-out' : (p.stock<=5 ? 'stock-low' : 'stock-ok');
+    const stockText = p.stock<=0 ? 'نفدت الكمية' : (p.stock<=5 ? 'كمية محدودة ('+p.stock+')' : 'متوفر ('+p.stock+')');
+    const swatches = p.colors.map(c=>`<span class="sw" style="background:${c}"></span>`).join('');
+    return `
+    <div class="card">
+      <div class="p-top" style="background:${p.top || 'linear-gradient(120deg,#332E28,#201D1A)'}"></div>
       <div class="p-body">
-        <h3>${p.name}</h3>
-        <div class="p-desc">${p.desc}</div>
-        <div class="swatches">${p.colors.map(c=>`<div class="sw" style="background:${c}"></div>`).join('')}</div>
+        <h3>${escapeHtml(p.name)}</h3>
+        <p class="p-desc">${escapeHtml(p.desc||'')}</p>
+        <div class="swatches">${swatches}</div>
         <div class="p-foot">
-          <div class="price">${fmt(p.price)}</div>
-          <div class="stock-tag ${low?'stock-low':'stock-ok'}">${low? 'كمية محدودة: '+p.stock : 'متوفر: '+p.stock}</div>
+          <span class="price">${p.price.toLocaleString('ar-DZ')} دج</span>
+          <span class="stock-tag ${stockClass}">${stockText}</span>
         </div>
-        <button class="add-btn" onclick="addToCart(${p.id})">أضف إلى السلة</button>
+        <button class="add-btn" ${p.stock<=0?'disabled':''} onclick="addToCart(${p.id})">${p.stock<=0?'غير متوفر':'أضف إلى السلة'}</button>
       </div>
     </div>`;
   }).join('');
 }
 
-/* ================= RENDER: CRAFTSMEN ================= */
 function renderCraftsmen(){
   const grid = document.getElementById('craftsmenGrid');
-  grid.innerHTML = craftsmen.map(c=>{
-    const s = statusInfo(c.status);
-    const initials = c.name.split(' ').map(w=>w[0]).slice(0,2).join('');
-    return `<div class="craft-card">
-      <div class="avatar" style="background:${c.color}">${initials}</div>
-      <div class="craft-info">
-        <h3>${c.name}</h3>
-        <div class="spec">${c.spec}</div>
-        <span class="badge ${s.cls}">${s.label}</span>
-        <div class="stars">${stars(c.rating)}</div>
-        <div class="craft-actions"><button onclick="requestCraftsman(${c.id})">اطلب هذا الحرفي</button></div>
-      </div>
-    </div>`;
-  }).join('');
-  // populate contact select
-  const sel = document.getElementById('cCraft');
-  sel.innerHTML = '<option value="">بدون تحديد</option>' + craftsmen.map(c=>`<option value="${c.id}">${c.name} — ${c.spec}</option>`).join('');
-}
-function requestCraftsman(id){
-  const c = craftsmen.find(x=>x.id===id);
-  document.getElementById('cCraft').value = id;
-  document.getElementById('cMsg').value = `أرغب في طلب الحرفي ${c.name} (${c.spec}).`;
-  document.getElementById('contact').scrollIntoView();
-  showToast('تم تجهيز الطلب، أكمل بياناتك وأرسل ✅');
-}
-
-/* ================= RENDER: GALLERY (illustrative swatch cards) ================= */
-const galleryData = [
-  {title:'صالون بدرجات ترابية دافئة', grad:'linear-gradient(135deg,#B24B32,#D9A441)'},
-  {title:'واجهة خارجية بلمسة تركوازية', grad:'linear-gradient(135deg,#1F5F58,#6E7F52)'},
-  {title:'غرفة نوم بتشطيب مطفي أرجواني', grad:'linear-gradient(135deg,#5B3A5C,#B8862E)'},
-  {title:'ديكور جبسي فاخر لمجلس ضيافة', grad:'linear-gradient(135deg,#D9AF5D,#F1E7D6)'},
-  {title:'أبواب خشبية بورنيش طبيعي', grad:'linear-gradient(135deg,#8a5a2f,#5a3a1f)'},
-  {title:'واجهة معدنية بلمعان مميز', grad:'linear-gradient(135deg,#332E28,#7A7266)'},
-];
-function renderGallery(){
-  document.getElementById('galleryGrid').innerHTML = galleryData.map(g=>`
-    <div class="gal-card">
-      <div class="gal-fill" style="background:${g.grad}"></div>
-      <div class="gal-caption">${g.title}</div>
-    </div>`).join('');
-}
-
-/* ================= RENDER: REVIEWS ================= */
-const reviewsData = [
-  {name:'سارة مرابط', rating:5, txt:'جودة الدهان ممتازة والحرفي كان دقيق جدًا في التفاصيل. تجربة راقية فعلاً.'},
-  {name:'يوسف قدور', rating:4.5, txt:'تعاملت مع فريق الفخامة للدهن لطلاء واجهة المحل، النتيجة فاقت التوقعات.'},
-  {name:'أمينة شريفي', rating:5, txt:'الألوان المتوفرة رائعة والتسليم كان في الوقت المحدد، أنصح بهم بشدة.'},
-];
-function renderReviews(){
-  document.getElementById('reviewsGrid').innerHTML = reviewsData.map(r=>{
-    const initials = r.name.split(' ').map(w=>w[0]).join('');
-    return `<div class="rev-card">
-      <div class="rev-head">
-        <div class="avatar" style="background:var(--brass);width:44px;height:44px;font-size:14px;">${initials}</div>
-        <div><b>${r.name}</b><span>${stars(r.rating)}</span></div>
-      </div>
-      <div class="rev-txt">${r.txt}</div>
-    </div>`;
-  }).join('');
-}
-
-/* ================= CART ================= */
-function addToCart(id){
-  const item = cart.find(c=>c.productId===id);
-  const product = products.find(p=>p.id===id);
-  if(product.stock < 1){ showToast('نفدت الكمية من هذا المنتج'); return; }
-  if(item){ item.qty++; } else { cart.push({productId:id, qty:1}); }
-  renderCart(); toggleCart(true);
-  showToast('تمت الإضافة إلى السلة');
-}
-function changeQty(id, delta){
-  const item = cart.find(c=>c.productId===id);
-  item.qty += delta;
-  if(item.qty<=0) cart = cart.filter(c=>c.productId!==id);
-  renderCart();
-}
-function renderCart(){
-  const body = document.getElementById('cartBody');
-  const count = cart.reduce((a,c)=>a+c.qty,0);
-  document.getElementById('cartCount').textContent = count;
-  if(cart.length===0){
-    body.innerHTML = '<div class="empty-note">السلة فارغة حاليًا</div>';
-    document.getElementById('cartTotal').textContent = fmt(0);
-    return;
-  }
-  let total = 0;
-  body.innerHTML = cart.map(c=>{
-    const p = products.find(x=>x.id===c.productId);
-    total += p.price * c.qty;
-    return `<div class="cart-item">
-      <div class="sw-block" style="background:${p.top}"></div>
-      <div class="cart-item-info">
-        <b>${p.name}</b>
-        <div class="qty-ctrl">
-          <button onclick="changeQty(${p.id},-1)">−</button>
-          <span>${c.qty}</span>
-          <button onclick="changeQty(${p.id},1)">+</button>
-        </div>
-      </div>
-      <div>${fmt(p.price*c.qty)}</div>
-    </div>`;
-  }).join('');
-  document.getElementById('cartTotal').textContent = fmt(total);
-}
-function toggleCart(show){
-  document.getElementById('overlay').classList.toggle('show', show);
-  document.getElementById('drawer').classList.toggle('show', show);
-}
-async function confirmOrder(){
-  if(cart.length===0){ showToast('السلة فارغة'); return; }
-  let total = 0;
-  const items = cart.map(c=>{
-    const p = products.find(x=>x.id===c.productId);
-    p.stock -= c.qty; // deduct warehouse stock
-    total += p.price*c.qty;
-    return {name:p.name, qty:c.qty, price:p.price, productId:p.id, newStock:p.stock};
-  });
-  const date = new Date().toLocaleDateString('ar-DZ');
-  orders.push({id:orders.length+1, items, total, date});
-  finance.push({id:finance.length+1, type:'income', label:'طلب رقم '+orders.length, amount:total});
-  cart = [];
-  renderCart(); renderProducts(); toggleCart(false);
-  showToast('تم تأكيد طلبك، جاري الحفظ في جوجل شيت...');
-
-  await postToSheet('addOrder', {items, total, date});
-  await postToSheet('addFinance', {type:'income', label:'طلب رقم '+orders.length, amount:total});
-  for(const it of items){
-    await postToSheet('updateStock', {id: it.productId, stock: it.newStock});
-  }
-  showToast('تم حفظ الطلب في جوجل شيت ✅');
-}
-
-/* ================= CONTACT ================= */
-async function submitContact(e){
-  e.preventDefault();
-  const craftId = document.getElementById('cCraft').value;
-  const craft = craftId ? craftsmen.find(c=>c.id==craftId).name : 'بدون تحديد';
-  const entry = {
-    id:messages.length+1,
-    name:document.getElementById('cName').value,
-    phone:document.getElementById('cPhone').value,
-    craft,
-    msg:document.getElementById('cMsg').value,
-    date:new Date().toLocaleDateString('ar-DZ')
-  };
-  messages.push(entry);
-  document.getElementById('contactForm').reset();
-  showToast('تم إرسال طلبك بنجاح، شكرًا لك 🌿');
-  await postToSheet('addMessage', entry);
-}
-
-/* ================= ADMIN ================= */
-let adminLoggedIn = false;
-function openAdmin(){
-  document.getElementById('adminOverlay').classList.add('show');
-  document.getElementById('loginView').style.display = adminLoggedIn? 'none':'block';
-  document.getElementById('dashView').style.display = adminLoggedIn? 'block':'none';
-  if(adminLoggedIn) switchTab('overview');
-}
-function closeAdmin(){ document.getElementById('adminOverlay').classList.remove('show'); }
-function doLogin(){
-  const val = document.getElementById('adminPass').value;
-  if(val === 'admin123'){
-    adminLoggedIn = true;
-    document.getElementById('loginView').style.display='none';
-    document.getElementById('dashView').style.display='block';
-    switchTab('overview');
-  } else {
-    document.getElementById('loginErr').style.display='block';
-  }
-}
-function switchTab(tab){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
-  const c = document.getElementById('tabContent');
-  if(tab==='overview') c.innerHTML = renderOverview();
-  if(tab==='products') c.innerHTML = renderAdminProducts();
-  if(tab==='warehouse') c.innerHTML = renderWarehouse();
-  if(tab==='finance') c.innerHTML = renderFinance();
-  if(tab==='orders') c.innerHTML = renderOrdersAdmin();
-  if(tab==='craftsmen') c.innerHTML = renderCraftsmenAdmin();
-  if(tab==='messages') c.innerHTML = renderMessagesAdmin();
-}
-
-function renderOverview(){
-  const income = finance.filter(f=>f.type==='income').reduce((a,f)=>a+f.amount,0);
-  const expense = finance.filter(f=>f.type==='expense').reduce((a,f)=>a+f.amount,0);
-  const lowStock = products.filter(p=>p.stock<=5).length;
-  return `<div class="stat-grid">
-    <div class="stat-card"><b>${orders.length}</b><span>عدد الطلبات</span></div>
-    <div class="stat-card"><b>${fmt(income-expense)}</b><span>الرصيد الصافي</span></div>
-    <div class="stat-card"><b>${products.length}</b><span>عدد المنتجات</span></div>
-    <div class="stat-card" style="border-top-color:var(--terracotta)"><b>${lowStock}</b><span>منتجات كميتها منخفضة</span></div>
-    <div class="stat-card"><b>${craftsmen.filter(c=>c.status==='free').length}</b><span>حرفيون متاحون الآن</span></div>
-    <div class="stat-card"><b>${messages.length}</b><span>رسائل جديدة</span></div>
-  </div>`;
-}
-
-function renderAdminProducts(){
-  return `<div class="admin-form">
-    <h3 style="margin-bottom:12px;">إضافة منتج جديد</h3>
-    <div class="row">
-      <input id="npName" placeholder="اسم المنتج">
-      <input id="npPrice" type="number" placeholder="السعر (دج)">
-      <input id="npStock" type="number" placeholder="الكمية بالمستودع">
-      <button class="btn btn-brass" onclick="addProduct()">إضافة</button>
-    </div>
-  </div>
-  <table><thead><tr><th>المنتج</th><th>السعر</th><th>المخزون</th><th>إجراء</th></tr></thead>
-  <tbody>${products.map(p=>`<tr>
-    <td>${p.name}</td><td>${fmt(p.price)}</td>
-    <td class="${p.stock<=5?'low-flag':''}">${p.stock}</td>
-    <td><button class="mini-btn mini-red" onclick="deleteProduct(${p.id})">حذف</button></td>
-  </tr>`).join('')}</tbody></table>`;
-}
-async function addProduct(){
-  const name = document.getElementById('npName').value;
-  const price = parseFloat(document.getElementById('npPrice').value);
-  const stock = parseInt(document.getElementById('npStock').value);
-  if(!name||!price||!stock){ showToast('أكمل جميع الحقول'); return; }
-  const palette = ['#B24B32','#1F5F58','#D9A441','#5B3A5C','#6E7F52'];
-  const desc = 'منتج جديد أضيف من لوحة التحكم';
-  const colors = [palette[Math.floor(Math.random()*5)]];
-  const top = 'linear-gradient(120deg,#332E28,#201D1A)';
-  const tempId = Date.now();
-  products.push({id:tempId, name, desc, price, stock, colors, top});
-  renderProducts(); switchTab('products');
-  showToast('تمت إضافة المنتج');
-
-  const res = await postToSheet('addProduct', {name, desc, price, stock, colors, top});
-  if(res.ok && res.id){
-    const p = products.find(p=>p.id===tempId);
-    if(p) p.id = res.id; // مزامنة المعرف الحقيقي من الشيت
-  }
-}
-async function deleteProduct(id){
-  products = products.filter(p=>p.id!==id);
-  renderProducts(); switchTab('products');
-  await postToSheet('deleteProduct', {id});
-}
-
-function renderWarehouse(){
-  return `<table><thead><tr><th>المنتج</th><th>الكمية الحالية</th><th>تعديل الكمية</th></tr></thead>
-  <tbody>${products.map(p=>`<tr>
-    <td>${p.name}</td>
-    <td class="${p.stock<=5?'low-flag':''}">${p.stock} ${p.stock<=5?'⚠️ منخفض':''}</td>
-    <td>
-      <input class="mini-input" type="number" id="stock-${p.id}" value="${p.stock}">
-      <button class="mini-btn mini-brass" onclick="updateStock(${p.id})">تحديث</button>
-    </td>
-  </tr>`).join('')}</tbody></table>`;
-}
-async function updateStock(id){
-  const val = parseInt(document.getElementById('stock-'+id).value);
-  const p = products.find(x=>x.id===id);
-  p.stock = val;
-  renderProducts(); switchTab('warehouse');
-  showToast('تم تحديث المخزون');
-  await postToSheet('updateStock', {id, stock:val});
-}
-
-function renderFinance(){
-  const income = finance.filter(f=>f.type==='income').reduce((a,f)=>a+f.amount,0);
-  const expense = finance.filter(f=>f.type==='expense').reduce((a,f)=>a+f.amount,0);
-  return `<div class="stat-grid">
-    <div class="stat-card"><b>${fmt(income)}</b><span>إجمالي الإيرادات</span></div>
-    <div class="stat-card" style="border-top-color:var(--terracotta)"><b>${fmt(expense)}</b><span>إجمالي المصروفات</span></div>
-    <div class="stat-card"><b>${fmt(income-expense)}</b><span>الرصيد الصافي</span></div>
-  </div>
-  <div class="admin-form">
-    <h3 style="margin-bottom:12px;">إضافة حركة مالية</h3>
-    <div class="row">
-      <select id="fType"><option value="income">إيراد</option><option value="expense">مصروف</option></select>
-      <input id="fLabel" placeholder="الوصف">
-      <input id="fAmount" type="number" placeholder="المبلغ (دج)">
-      <button class="btn btn-brass" onclick="addFinance()">إضافة</button>
-    </div>
-  </div>
-  <table><thead><tr><th>النوع</th><th>الوصف</th><th>المبلغ</th></tr></thead>
-  <tbody>${finance.map(f=>`<tr>
-    <td>${f.type==='income'?'إيراد 🟢':'مصروف 🔴'}</td><td>${f.label}</td><td>${fmt(f.amount)}</td>
-  </tr>`).join('')}</tbody></table>`;
-}
-async function addFinance(){
-  const type = document.getElementById('fType').value;
-  const label = document.getElementById('fLabel').value;
-  const amount = parseFloat(document.getElementById('fAmount').value);
-  if(!label||!amount){ showToast('أكمل الحقول'); return; }
-  finance.push({id:finance.length+1, type, label, amount});
-  switchTab('finance');
-  showToast('تمت إضافة الحركة المالية');
-  await postToSheet('addFinance', {type, label, amount});
-}
-
-function renderOrdersAdmin(){
-  if(orders.length===0) return `<div class="empty-note">لا توجد طلبات بعد</div>`;
-  return `<table><thead><tr><th>رقم الطلب</th><th>التاريخ</th><th>عدد المنتجات</th><th>الإجمالي</th></tr></thead>
-  <tbody>${orders.map(o=>`<tr>
-    <td>#${o.id}</td><td>${o.date}</td><td>${o.items.reduce((a,i)=>a+i.qty,0)}</td><td>${fmt(o.total)}</td>
-  </tr>`).join('')}</tbody></table>`;
-}
-
-function renderCraftsmenAdmin(){
-  return `<table><thead><tr><th>الاسم</th><th>التخصص</th><th>الحالة</th><th>تغيير الحالة</th></tr></thead>
-  <tbody>${craftsmen.map(c=>`<tr>
-    <td>${c.name}</td><td>${c.spec}</td><td>${statusInfo(c.status).label}</td>
-    <td>
-      <select onchange="setCraftStatus(${c.id}, this.value)">
-        <option value="free" ${c.status==='free'?'selected':''}>متاح الآن</option>
-        <option value="busy" ${c.status==='busy'?'selected':''}>مشغول اليوم</option>
-        <option value="tomorrow" ${c.status==='tomorrow'?'selected':''}>متاح غدًا</option>
-      </select>
-    </td>
-  </tr>`).join('')}</tbody></table>`;
-}
-async function setCraftStatus(id, status){
-  craftsmen.find(c=>c.id===id).status = status;
-  renderCraftsmen(); switchTab('craftsmen');
-  showToast('تم تحديث حالة الحرفي');
-  await postToSheet('updateCraftStatus', {id, status});
-}
-
-function renderMessagesAdmin(){
-  if(messages.length===0) return `<div class="empty-note">لا توجد رسائل بعد</div>`;
-  return `<table><thead><tr><th>الاسم</th><th>الهاتف</th><th>الحرفي المطلوب</th><th>الرسالة</th><th>التاريخ</th></tr></thead>
-  <tbody>${messages.map(m=>`<tr>
-    <td>${m.name}</td><td>${m.phone}</td><td>${m.craft}</td><td>${m.msg}</td><td>${m.date}</td>
-  </tr>`).join('')}</tbody></table>`;
-}
-
-/* ================= INIT ================= */
-renderProducts();
-renderCraftsmen();
-renderGallery();
-renderReviews();
-renderCart();
-loadFromSheet(); // يحاول تحميل البيانات الحقيقية من جوجل شيت إن كان الرابط مضبوطًا
-</script>
-</body>
-</html>
+  if(CRAFTSMEN.length === 0){ grid.innerHTML = '<div class="load-note">لا يوجد حرفيون مسجلون حاليًا.</div>'; return; }
+  grid.innerHTML = CRAFTSMEN.map(c=>{
+    const initials = (c.name||'').trim().split(' ').map(w=>w[0]).slice(0,2).join('');
+    const stars = '★'.repeat(Math.round(Number(c.rating)||0)) + '☆'.repeat(5-Math.round(Number(c.rating)||0));
+    return `
+    <div class="craft-card">
+      <div class="avatar" style="background:${c.color||'#B24B32'}">${initials}</div>
