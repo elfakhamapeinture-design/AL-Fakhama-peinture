@@ -361,3 +361,181 @@ function renderCraftsmen(){
     return `
     <div class="craft-card">
       <div class="avatar" style="background:${c.color||'#B24B32'}">${initials}</div>
+      <div class="craft-info">
+        <h3>${escapeHtml(c.name)}</h3>
+        <div class="spec">${escapeHtml(c.spec||'')}</div>
+        <span class="badge ${STATUS_CLASS[c.status]||'badge-free'}">${STATUS_LABEL[c.status]||c.status}</span>
+        <div class="stars">${stars} ${c.rating}</div>
+        <div class="craft-actions"><button onclick="requestCraftsman('${escapeHtml(c.name)}')">اطلب هذا الحرفي</button></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function populateCraftSelect(){
+  const sel = document.getElementById('cCraft');
+  sel.innerHTML = '<option value="">بدون تحديد</option>' + CRAFTSMEN.map(c=>`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join('');
+}
+
+function requestCraftsman(name){
+  document.getElementById('cCraft').value = name;
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+  showToast('تم اختيار ' + name + '، أكمل بياناتك أدناه');
+}
+
+/* ---------- السلة ---------- */
+function addToCart(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!p || p.stock<=0) return;
+  const existing = CART.find(x=>x.id===id);
+  if(existing){
+    if(existing.qty < p.stock) existing.qty++;
+    else { showToast('الكمية المطلوبة تتجاوز المخزون المتاح'); return; }
+  } else {
+    CART.push({id:p.id, name:p.name, price:p.price, color:(p.colors&&p.colors[0])||'#333', qty:1});
+  }
+  renderCart();
+  showToast(p.name + ' أُضيف إلى السلة');
+}
+
+function changeQty(id, delta){
+  const item = CART.find(x=>x.id===id);
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0){ CART = CART.filter(x=>x.id!==id); }
+  else if(p && item.qty > p.stock){ item.qty = p.stock; showToast('لا يوجد مخزون كافٍ'); }
+  renderCart();
+}
+
+function renderCart(){
+  const body = document.getElementById('cartBody');
+  const countEl = document.getElementById('cartCount');
+  const totalEl = document.getElementById('cartTotal');
+  const totalQty = CART.reduce((s,i)=>s+i.qty,0);
+  countEl.textContent = totalQty;
+  if(CART.length===0){
+    body.innerHTML = '<div class="empty-note">السلة فارغة حاليًا</div>';
+    totalEl.textContent = '0 دج';
+    return;
+  }
+  body.innerHTML = CART.map(i=>`
+    <div class="cart-item">
+      <div class="sw-block" style="background:${i.color}"></div>
+      <div class="cart-item-info">
+        <b>${escapeHtml(i.name)}</b>
+        <span style="font-size:12.5px;color:var(--muted)">${i.price.toLocaleString('ar-DZ')} دج</span>
+        <div class="qty-ctrl">
+          <button onclick="changeQty(${i.id},-1)">−</button>
+          <span>${i.qty}</span>
+          <button onclick="changeQty(${i.id},1)">+</button>
+        </div>
+      </div>
+    </div>`).join('');
+  const total = CART.reduce((s,i)=>s+i.qty*i.price,0);
+  totalEl.textContent = total.toLocaleString('ar-DZ') + ' دج';
+}
+
+function toggleCart(show){
+  document.getElementById('overlay').classList.toggle('show', show);
+  document.getElementById('drawer').classList.toggle('show', show);
+}
+
+async function confirmOrder(){
+  if(CART.length===0){ showToast('السلة فارغة'); return; }
+  const btn = document.getElementById('confirmOrderBtn');
+  btn.disabled = true; btn.textContent = 'جاري الإرسال...';
+  const total = CART.reduce((s,i)=>s+i.qty*i.price,0);
+  try{
+    const res = await fetch(SHEET_API_URL, {
+      method:'POST',
+      body: JSON.stringify({ action:'addOrder', items:CART, total, date:new Date().toISOString() })
+    });
+    const data = await res.json();
+    if(data.ok){
+      CART = [];
+      renderCart();
+      toggleCart(false);
+      showToast('تم إرسال طلبك بنجاح، سنتواصل معك قريبًا ✅');
+    } else {
+      showToast('حدث خطأ أثناء إرسال الطلب، حاول مجددًا');
+    }
+  }catch(err){
+    showToast('تعذّر الاتصال بالخادم، تحقق من الإنترنت');
+    console.error(err);
+  }
+  btn.disabled = false; btn.textContent = 'تأكيد الطلب';
+}
+
+/* ---------- نموذج التواصل ---------- */
+async function submitContact(e){
+  e.preventDefault();
+  const btn = document.getElementById('contactSubmitBtn');
+  const payload = {
+    action:'addMessage',
+    name: document.getElementById('cName').value.trim(),
+    phone: document.getElementById('cPhone').value.trim(),
+    craft: document.getElementById('cCraft').value,
+    msg: document.getElementById('cMsg').value.trim(),
+    date: new Date().toISOString()
+  };
+  btn.disabled = true; btn.textContent = 'جاري الإرسال...';
+  try{
+    const res = await fetch(SHEET_API_URL, { method:'POST', body: JSON.stringify(payload) });
+    const data = await res.json();
+    if(data.ok){
+      document.getElementById('contactForm').reset();
+      showToast('تم إرسال طلبك، سنتواصل معك قريبًا ✅');
+    } else {
+      showToast('حدث خطأ أثناء الإرسال، حاول مجددًا');
+    }
+  }catch(err){
+    showToast('تعذّر الاتصال بالخادم، تحقق من الإنترنت');
+    console.error(err);
+  }
+  btn.disabled = false; btn.textContent = 'إرسال الطلب';
+}
+
+/* ---------- أدوات مساعدة ---------- */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+function escapeHtml(str){
+  return String(str??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+/* ---------- معرض الأعمال وآراء العملاء (محتوى تعريفي ثابت) ---------- */
+const GALLERY = [
+  {title:'واجهة فيلا خارجية', bg:'linear-gradient(140deg,var(--terracotta),#8f3a25)'},
+  {title:'صالون بلمسة مطفية', bg:'linear-gradient(140deg,var(--plum),#3d2740)'},
+  {title:'أثاث خشبي مورنش', bg:'linear-gradient(140deg,#B8862E,#8a5a2f)'},
+  {title:'واجهة محل تجاري', bg:'linear-gradient(140deg,var(--teal),#123f3a)'},
+];
+document.getElementById('galleryGrid').innerHTML = GALLERY.map(g=>`
+  <div class="gal-card"><div class="gal-fill" style="background:${g.bg}"></div><div class="gal-caption">${g.title}</div></div>
+`).join('');
+
+const REVIEWS = [
+  {name:'سميرة ب.', txt:'جودة الدهان ممتازة والحرفي كان دقيقًا في المواعيد، تجربة أنصح بها.', color:'#B24B32'},
+  {name:'يوسف ك.', txt:'اخترت الدهان الخارجي المقاوم، وبعد فصل الشتاء بقي بنفس اللمعان.', color:'#1F5F58'},
+  {name:'إيمان ز.', txt:'تعاملهم راقٍ وسريع، والألوان مطابقة تمامًا لما شاهدته في الموقع.', color:'#5B3A5C'},
+];
+document.getElementById('reviewsGrid').innerHTML = REVIEWS.map(r=>{
+  const initial = r.name[0];
+  return `<div class="rev-card">
+    <div class="rev-head">
+      <div class="rev-avatar" style="background:${r.color}">${initial}</div>
+      <div><b>${r.name}</b><span>عميل موثّق</span></div>
+    </div>
+    <div class="rev-txt">${r.txt}</div>
+  </div>`;
+}).join('');
+
+loadData();
+</script>
+</body>
+</html>
