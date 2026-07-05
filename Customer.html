@@ -112,7 +112,7 @@ async function lookup(){
   if(!phone){ area.innerHTML = '<div class="empty-note">الرجاء إدخال رقم الهاتف</div>'; return; }
   area.innerHTML = '<div class="loader">جاري البحث...</div>';
   try{
-    const res = await fetch("https://script.google.com/macros/s/AKfycbybPualrxvIvm0Lb5LPhJMaI16orKKCk2D0N7wQN1JNeU-ohO0ScDb_AXlRVHoHOIW9fw/exec"+ '?phone=' +213656450486(phone));
+    const res = await fetch("https://script.google.com/macros/s/AKfycbybPualrxvIvm0Lb5LPhJMaI16orKKCk2D0N7wQN1JNeU-ohO0ScDb_AXlRVHoHOIW9fw/exec"+ '?phone=' + encodeURIComponent(phone));
     const data = await res.json();
     lastOrders = (data.orders || []).map(o=>({
       ...o,
