@@ -103,6 +103,7 @@
   .gal-card{border-radius:16px;overflow:hidden;box-shadow:var(--shadow);position:relative;height:220px;background:var(--canvas-warm);}
   .gal-fill{position:absolute;inset:0;background-size:cover;background-position:center;}
   .gal-caption{position:absolute;bottom:0;right:0;left:0;padding:14px;background:linear-gradient(0deg,rgba(0,0,0,.65),transparent);color:#fff;font-weight:700;font-size:14px;}
+
   .rev-card{background:var(--card);border-radius:16px;padding:22px;box-shadow:var(--shadow);border:1px solid var(--line);}
   .rev-head{display:flex;gap:12px;align-items:center;margin-bottom:12px;}
   .rev-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-family:'El Messiri',serif;}
@@ -147,9 +148,21 @@
   .load-note{color:var(--muted);font-size:14px;padding:20px 0;text-align:center;grid-column:1/-1;}
   .checkout-fields{margin-top:6px;border-top:1px dashed var(--line);padding-top:14px;}
   .checkout-fields .field{margin-bottom:10px;}
+
+  .join-section{background:linear-gradient(135deg,var(--ink),#2b2620);color:#fff;}
+  .join-section .section-head p{color:#d8cfc0;}
+  .join-section .eyebrow{color:var(--brass-light);}
+  .join-form{background:#fff;border-radius:18px;padding:30px;box-shadow:var(--shadow);max-width:640px;margin:0 auto;color:var(--ink);}
+  .join-form .row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:600px){.join-form .row{grid-template-columns:1fr;}}
+
+  .wa-float{position:fixed;bottom:24px;right:24px;background:#25D366;color:#fff;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(37,211,102,.45);z-index:80;font-size:28px;transition:transform .2s;}
+  .wa-float:hover{transform:scale(1.08);}
 </style>
 </head>
 <body>
+
+<a class="wa-float" href="https://wa.me/213555000000" target="_blank" title="تواصل عبر واتساب">💬</a>
 
 <header>
   <div class="nav">
@@ -157,6 +170,7 @@
     <nav class="nav-links">
       <a href="#products">المنتجات</a>
       <a href="#craftsmen">الحرفيون</a>
+      <a href="#join">انضم كحرفي</a>
       <a href="#gallery">أعمالنا</a>
       <a href="#reviews">آراء العملاء</a>
       <a href="#contact">تواصل معنا</a>
@@ -214,6 +228,29 @@
   </div>
 </section>
 
+<section class="join-section" id="join">
+  <div class="wrap">
+    <div class="section-head">
+      <div><div class="eyebrow">انضم إلينا</div><h2 style="color:#fff;">هل أنت حرفي محترف؟ رشّح نفسك للانضمام</h2></div>
+      <p>إذا كنت حرفي دهان أو ديكور وتريد استقبال طلبات عبر منصتنا، أرسل بياناتك وسنتواصل معك.</p>
+    </div>
+    <div class="join-form">
+      <form id="joinForm" onsubmit="submitJoin(event)">
+        <div class="row">
+          <div class="field"><label>الاسم الكامل</label><input required id="jName" placeholder="اسمك الكامل"></div>
+          <div class="field"><label>رقم الهاتف</label><input required id="jPhone" placeholder="05********"></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>التخصص</label><input required id="jSpec" placeholder="مثال: دهان داخلي، ورنيش..."></div>
+          <div class="field"><label>سنوات الخبرة</label><input id="jExp" type="number" placeholder="مثال: 5"></div>
+        </div>
+        <div class="field"><label>نبذة عنك (اختياري)</label><textarea id="jMsg" placeholder="أعمال سابقة، مناطق التغطية..."></textarea></div>
+        <button class="btn btn-brass" type="submit" style="width:100%;" id="joinSubmitBtn">إرسال طلب الانضمام</button>
+      </form>
+    </div>
+  </div>
+</section>
+
 <section id="gallery">
   <div class="wrap">
     <div class="section-head">
@@ -249,9 +286,9 @@
     <div class="info-card">
       <h3>معلومات المحل</h3>
       <div class="info-row">📍 <div><b>العنوان:</b><br>ورقلة، الجزائر</div></div>
-      <div class="info-row">📞 <div><b>الهاتف:</b><br>0555-00-00-00</div></div>
+      <div class="info-row">📞 <div><b>الهاتف:</b><br>0656-45-04-86</div></div>
       <div class="info-row">🕒 <div><b>أوقات العمل:</b><br>السبت – الخميس، 8:00 – 18:00</div></div>
-      <div class="info-row">✉️ <div><b>البريد:</b><br>contact@alfakhama-paint.dz</div></div>
+      <div class="info-row">✉️ <div><b>البريد:</b><br>elfakhamapeinture@gmail.com</div></div>
       <div class="info-row">🧾 <div><b>لديك طلب سابق؟</b><br><a href="customer.html">اضغط هنا لعرض مشترياتك وفاتورتك</a></div></div>
     </div>
   </div>
@@ -265,7 +302,7 @@
     <div>
       <b style="color:#fff;">روابط سريعة</b>
       <div style="margin-top:10px;font-size:13.5px;display:flex;flex-direction:column;gap:8px;">
-        <a href="#products">المنتجات</a><a href="#craftsmen">الحرفيون</a><a href="#gallery">أعمالنا</a><a href="#contact">تواصل معنا</a>
+        <a href="#products">المنتجات</a><a href="#craftsmen">الحرفيون</a><a href="#join">انضم كحرفي</a><a href="#gallery">أعمالنا</a><a href="#contact">تواصل معنا</a>
         <a href="customer.html">حسابي وفواتيري</a>
       </div>
     </div>
@@ -288,7 +325,6 @@
     <button class="btn btn-brass" style="width:100%;" onclick="confirmOrder()" id="confirmOrderBtn">تأكيد الطلب</button>
   </div>
 </div>
-
 
 <script>
 /* ====== رابط الويب أب الخاص بجوجل شيت (نفس الرابط في admin.html و customer.html) ====== */
@@ -496,6 +532,36 @@ async function confirmOrder(){
     console.error(err);
   }
   btn.disabled = false; btn.textContent = 'تأكيد الطلب';
+}
+
+/* ---------- طلب الانضمام كحرفي ---------- */
+async function submitJoin(e){
+  e.preventDefault();
+  const btn = document.getElementById('joinSubmitBtn');
+  const payload = {
+    action:'addApplication',
+    name: document.getElementById('jName').value.trim(),
+    phone: document.getElementById('jPhone').value.trim(),
+    spec: document.getElementById('jSpec').value.trim(),
+    experience: document.getElementById('jExp').value.trim(),
+    msg: document.getElementById('jMsg').value.trim(),
+    date: new Date().toISOString()
+  };
+  btn.disabled = true; btn.textContent = 'جاري الإرسال...';
+  try{
+    const res = await fetch(SHEET_API_URL, { method:'POST', body: JSON.stringify(payload) });
+    const data = await res.json();
+    if(data.ok){
+      document.getElementById('joinForm').reset();
+      showToast('تم إرسال طلب انضمامك، سنتواصل معك قريبًا ✅');
+    } else {
+      showToast('حدث خطأ أثناء الإرسال، حاول مجددًا');
+    }
+  }catch(err){
+    showToast('تعذّر الاتصال بالخادم، تحقق من الإنترنت');
+    console.error(err);
+  }
+  btn.disabled = false; btn.textContent = 'إرسال طلب الانضمام';
 }
 
 /* ---------- نموذج التواصل ---------- */
