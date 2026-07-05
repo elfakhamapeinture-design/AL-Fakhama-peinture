@@ -93,305 +93,353 @@
     </div>
 
     <div class="tab-panel active" id="tab-overview">
-      <h3 class="section-title">نظرة عامة</h3>
-      <div class="stat-grid" id="statGrid"></div>
-    </div>
+      <h3 class="section-title">نظرة عامة</h3><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة إدارة — الفخامة للدهن</title>
+<link rel="icon" id="favicon" type="image/webp" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#201D1A; --canvas:#FAF6EF; --canvas-warm:#F1E7D6; --brass:#B8862E;
+    --terracotta:#B24B32; --teal:#1F5F58; --sage:#6E7F52; --muted:#7A7266;
+    --line:rgba(32,29,26,0.10); --shadow:0 10px 30px rgba(32,29,26,0.10);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:'Tajawal',sans-serif;}
+  h1,h2,h3{font-family:'El Messiri',serif;margin:0;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  .top{background:var(--ink);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+  .brand{font-family:'El Messiri',serif;font-weight:700;font-size:20px;display:flex;align-items:center;gap:10px;}
+  .brand-mark{width:28px;height:28px;border-radius:7px;background:conic-gradient(from 200deg,var(--terracotta),#D9A441,var(--teal),#5B3A5C);}
+  .btn{padding:9px 16px;border-radius:9px;font-weight:700;font-size:13.5px;}
+  .btn-ghost{background:transparent;border:1.5px solid #fff;color:#fff;}
+  .btn-brass{background:var(--brass);color:#fff;}
+  .body{max-width:1180px;margin:0 auto;padding:30px 24px 70px;}
+  .login-box{max-width:360px;margin:80px auto;background:#fff;padding:34px;border-radius:16px;box-shadow:var(--shadow);text-align:center;}
+  .login-box input{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);font-size:14px;margin-bottom:14px;}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px;}
+  .tab-btn{padding:9px 16px;border-radius:10px;background:#fff;border:1.5px solid var(--line);font-weight:700;font-size:13.5px;}
+  .tab-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:30px;}
+  .stat-card{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow);border-top:4px solid var(--brass);}
+  .stat-card.warn{border-top-color:var(--terracotta);}
+  .stat-card b{font-family:'El Messiri',serif;font-size:26px;display:block;}
+  .stat-card span{color:var(--muted);font-size:13px;}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+  th,td{padding:12px 14px;text-align:right;font-size:13.5px;border-bottom:1px solid var(--line);}
+  th{background:var(--canvas-warm);font-weight:800;}
+  .mini-btn{padding:6px 10px;border-radius:7px;font-size:12px;font-weight:700;}
+  .mini-brass{background:var(--brass);color:#fff;}
+  .mini-red{background:#f6dcd4;color:var(--terracotta);}
+  .mini-input{width:75px;padding:6px 8px;border-radius:6px;border:1.5px solid var(--line);}
+  .admin-form{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:24px;}
+  .admin-form .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+  .admin-form input,.admin-form select{padding:9px 12px;border-radius:8px;border:1.5px solid var(--line);font-family:inherit;font-size:13.5px;}
+  .low-flag{color:var(--terracotta);font-weight:800;}
+  .empty-note{color:var(--muted);text-align:center;padding:30px 0;}
+  .pay-full{color:var(--sage);font-weight:800;}
+  .pay-partial{color:#8a6a1f;font-weight:800;}
+  .pay-none{color:var(--terracotta);font-weight:800;}
+  img.gal-thumb{width:60px;height:44px;object-fit:cover;border-radius:6px;}
+</style>
+</head>
+<body>
 
-    <div class="tab-panel" id="tab-products">
-      <div class="admin-form">
-        <h3>إضافة منتج جديد</h3>
-        <div class="row">
-          <input type="text" id="pName" placeholder="اسم المنتج">
-          <input type="number" id="pPrice" placeholder="السعر (دج)">
-          <input type="number" id="pStock" placeholder="الكمية بالمخزون">
-        </div>
-        <div class="row">
-          <input type="text" id="pDesc" placeholder="الوصف">
-          <input type="text" id="pColors" placeholder="ألوان (مفصولة بفاصلة) مثال: #B24B32,#1F5F58">
-        </div>
-        <button class="btn btn-brass" onclick="addProduct()">إضافة المنتج</button>
-      </div>
-      <div class="table-wrap">
-        <table id="productsTable">
-          <thead><tr><th>ID</th><th>الاسم</th><th>الوصف</th><th>السعر</th><th>المخزون</th><th>الألوان</th><th></th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
+<div class="top">
+  <div class="brand"><img id="logoImg" src="" alt="" style="display:none;width:26px;height:26px;border-radius:7px;object-fit:cover;"><div class="brand-mark" id="logoFallback"></div>لوحة إدارة الفخامة للدهن</div>
+  <a class="btn btn-ghost" href="index.html">العودة للموقع</a>
+</div>
 
-    <div class="tab-panel" id="tab-craftsmen">
-      <div class="table-wrap">
-        <table id="craftsmenTable">
-          <thead><tr><th>ID</th><th>الاسم</th><th>التخصص</th><th>التقييم</th><th>الحالة</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
+<div class="body">
+  <div id="loginView">
+    <div class="login-box">
+      <h2 style="margin-bottom:6px;">دخول الإدارة</h2>
+      <p style="color:var(--muted);font-size:13.5px;margin-bottom:20px;">أدخل كلمة المرور للوصول إلى لوحة التحكم</p>
+      <input type="password" id="adminPass" placeholder="كلمة المرور">
+      <button class="btn btn-brass" style="width:100%;" onclick="doLogin()">دخول</button>
+      <p id="loginErr" style="color:var(--terracotta);font-size:13px;margin-top:10px;display:none;">كلمة المرور غير صحيحة</p>
     </div>
+  </div>
 
-    <div class="tab-panel" id="tab-orders">
-      <div class="table-wrap">
-        <table id="ordersTable">
-          <thead><tr><th>ID</th><th>المنتجات</th><th>الإجمالي</th><th>التاريخ</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
+  <div id="dashView" style="display:none;">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">نظرة عامة</button>
+      <button class="tab-btn" data-tab="products" onclick="switchTab('products')">المنتجات</button>
+      <button class="tab-btn" data-tab="warehouse" onclick="switchTab('warehouse')">المستودع</button>
+      <button class="tab-btn" data-tab="gallery" onclick="switchTab('gallery')">معرض الأعمال</button>
+      <button class="tab-btn" data-tab="orders" onclick="switchTab('orders')">الطلبات والديون</button>
+      <button class="tab-btn" data-tab="finance" onclick="switchTab('finance')">المصريف</button>
+      <button class="tab-btn" data-tab="craftsmen" onclick="switchTab('craftsmen')">الحرفيون</button>
+      <button class="tab-btn" data-tab="messages" onclick="switchTab('messages')">الرسائل</button>
+      <button class="tab-btn" data-tab="applications" onclick="switchTab('applications')">طلبات الانضمام</button>
     </div>
-
-    <div class="tab-panel" id="tab-messages">
-      <div class="table-wrap">
-        <table id="messagesTable">
-          <thead><tr><th>ID</th><th>الاسم</th><th>الهاتف</th><th>الحرفي المطلوب</th><th>الرسالة</th><th>التاريخ</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="tab-finance">
-      <div class="admin-form">
-        <h3>إضافة حركة مالية</h3>
-        <div class="row">
-          <select id="fType"><option value="income">دخل</option><option value="expense">مصروف</option></select>
-          <input type="text" id="fLabel" placeholder="الوصف">
-          <input type="number" id="fAmount" placeholder="المبلغ (دج)">
-        </div>
-        <button class="btn btn-brass" onclick="addFinance()">إضافة</button>
-      </div>
-      <div class="table-wrap">
-        <table id="financeTable">
-          <thead><tr><th>ID</th><th>النوع</th><th>الوصف</th><th>المبلغ</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
+    <div id="tabContent"><div class="empty-note">جاري التحميل...</div></div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
-
 <script>
-/* ====== رابط الويب أب — يجب أن يكون نفس الرابط الموجود في index.html ====== */
+/* ====== إعدادات الاتصال (يجب أن تطابق ملف الباك اند) ====== */
 const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxYolR9DUT8iwP9az5N7638BCDcM5lWmTBKJI4RTPdaJehqqe69eoXZTxbNRMZH1pHBSg/exec";
+const LOGO_URL = "data:image/webp;base64,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";
+document.getElementById('favicon').href = LOGO_URL;
+document.getElementById('logoImg').src = LOGO_URL;
+document.getElementById('logoImg').style.display = 'block';
+document.getElementById('logoFallback').style.display = 'none';
+const ADMIN_KEY = "alfakhama-2026-x7q"; // يجب أن يطابق ADMIN_KEY في ملف .gs
+const LOGIN_PASSWORD = "admin123"; // غيّرها لكلمة مرور خاصة بك
 
-/* ====== نفس القيمة الموجودة في المتغير ADMIN_KEY داخل ملف Apps Script ======
-   غيّرها هناك وهنا معًا. لا تضع هذا الملف في مكان عام يمكن لأي شخص الوصول إليه. */
-const ADMIN_KEY = "alfakhama-2026-x7q";
-
-let DATA = { products:[], craftsmen:[], orders:[], messages:[], finance:[] };
+let DB = { products:[], craftsmen:[], orders:[], messages:[], finance:[], gallery:[], applications:[] };
 
 function doLogin(){
-  const val = document.getElementById('adminPass').value;
-  if(val === ADMIN_KEY){
-    document.getElementById('loginView').style.display = 'none';
-    document.getElementById('dashView').style.display = 'block';
-    loadAll();
+  if(document.getElementById('adminPass').value === LOGIN_PASSWORD){
+    document.getElementById('loginView').style.display='none';
+    document.getElementById('dashView').style.display='block';
+    refreshAll();
   } else {
-    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('loginErr').style.display='block';
   }
 }
-function logout(){
-  document.getElementById('dashView').style.display = 'none';
-  document.getElementById('loginView').style.display = 'block';
-  document.getElementById('adminPass').value = '';
-}
 
-function switchTab(name){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='tab-'+name));
-}
-
-/* ---------- تحميل كل البيانات (يتطلب المفتاح السري) ---------- */
-async function loadAll(){
+async function refreshAll(){
+  document.getElementById('tabContent').innerHTML = '<div class="empty-note">جاري تحميل البيانات من جوجل شيت...</div>';
   try{
     const res = await fetch(SHEET_API_URL + '?key=' + encodeURIComponent(ADMIN_KEY));
     const data = await res.json();
-    if(data.error === 'unauthorized'){ showToast('المفتاح السري غير صحيح في هذا الملف'); return; }
-    DATA.products = (data.products||[]).map(p=>({...p, price:Number(p.price)||0, stock:Number(p.stock)||0}));
-    DATA.craftsmen = data.craftsmen || [];
-    DATA.orders = data.orders || [];
-    DATA.messages = data.messages || [];
-    DATA.finance = (data.finance||[]).map(f=>({...f, amount:Number(f.amount)||0}));
-    renderOverview();
-    renderProducts();
-    renderCraftsmen();
-    renderOrders();
-    renderMessages();
-    renderFinance();
-    showToast('تم تحديث البيانات ✅');
+    DB.products = (data.products||[]).map(p=>({...p, id:Number(p.id), price:Number(p.price), stock:Number(p.stock)}));
+    DB.craftsmen = (data.craftsmen||[]).map(c=>({...c, id:Number(c.id)}));
+    DB.orders = (data.orders||[]).map(o=>({...o, id:Number(o.id), total:Number(o.total), paid:Number(o.paid), remaining:Number(o.remaining), items:JSON.parse(o.itemsJson||'[]')}));
+    DB.messages = data.messages||[];
+    DB.finance = (data.finance||[]).map(f=>({...f, id:Number(f.id), amount:Number(f.amount)}));
+    DB.gallery = (data.gallery||[]).map(g=>({...g, id:Number(g.id)}));
+    DB.applications = data.applications||[];
+    switchTab('overview');
   }catch(err){
-    showToast('تعذّر تحميل البيانات، تحقق من الاتصال');
+    document.getElementById('tabContent').innerHTML = '<div class="empty-note">تعذّر تحميل البيانات. تحقق من رابط SHEET_API_URL والاتصال بالإنترنت.</div>';
     console.error(err);
   }
 }
 
-async function callApi(payload){
-  payload.key = ADMIN_KEY;
-  const res = await fetch(SHEET_API_URL, { method:'POST', body: JSON.stringify(payload) });
-  return res.json();
+async function callApi(action, payload){
+  try{
+    const res = await fetch(SHEET_API_URL, { method:'POST', body: JSON.stringify({action, key:ADMIN_KEY, ...payload}) });
+    return await res.json();
+  }catch(err){
+    console.error(err);
+    return {ok:false};
+  }
 }
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  const c = document.getElementById('tabContent');
+  if(tab==='overview')   c.innerHTML = renderOverview();
+  if(tab==='products')   c.innerHTML = renderProducts();
+  if(tab==='warehouse')  c.innerHTML = renderWarehouse();
+  if(tab==='gallery')    c.innerHTML = renderGallery();
+  if(tab==='orders')     c.innerHTML = renderOrders();
+  if(tab==='finance')    c.innerHTML = renderFinance();
+  if(tab==='craftsmen')  c.innerHTML = renderCraftsmen();
+  if(tab==='messages')   c.innerHTML = renderMessages();
+  if(tab==='applications') c.innerHTML = renderApplications();
+}
+
+function fmt(n){ return (Number(n)||0).toLocaleString('ar-DZ') + ' دج'; }
+function esc(s){ return String(s??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
 /* ---------- نظرة عامة ---------- */
 function renderOverview(){
-  const income = DATA.finance.filter(f=>f.type==='income').reduce((s,f)=>s+f.amount,0);
-  const expense = DATA.finance.filter(f=>f.type==='expense').reduce((s,f)=>s+f.amount,0);
-  const lowStock = DATA.products.filter(p=>p.stock<=5).length;
-  const grid = document.getElementById('statGrid');
-  grid.innerHTML = `
-    <div class="stat-card"><b>${DATA.products.length}</b><span>عدد المنتجات</span></div>
-    <div class="stat-card"><b>${DATA.craftsmen.length}</b><span>عدد الحرفيين</span></div>
-    <div class="stat-card"><b>${DATA.orders.length}</b><span>عدد الطلبات</span></div>
-    <div class="stat-card"><b>${DATA.messages.length}</b><span>عدد الرسائل</span></div>
-    <div class="stat-card"><b>${(income-expense).toLocaleString('ar-DZ')} دج</b><span>الرصيد الحالي</span></div>
-    <div class="stat-card" style="border-top-color:var(--terracotta);"><b class="${lowStock>0?'low-flag':''}">${lowStock}</b><span>منتجات بمخزون منخفض</span></div>
-  `;
+  const income = DB.finance.filter(f=>f.type==='income').reduce((a,f)=>a+f.amount,0);
+  const expense = DB.finance.filter(f=>f.type==='expense').reduce((a,f)=>a+f.amount,0);
+  const lowStock = DB.products.filter(p=>p.stock<=5).length;
+  const totalDebt = DB.orders.reduce((s,o)=>s+o.remaining,0);
+  return `<div class="stat-grid">
+    <div class="stat-card"><b>${DB.orders.length}</b><span>عدد الطلبات</span></div>
+    <div class="stat-card"><b>${fmt(income-expense)}</b><span>الرصيد الصافي</span></div>
+    <div class="stat-card warn"><b>${fmt(totalDebt)}</b><span>إجمالي الديون على العملاء</span></div>
+    <div class="stat-card ${lowStock>0?'warn':''}"><b>${lowStock}</b><span>منتجات كميتها منخفضة</span></div>
+    <div class="stat-card"><b>${DB.craftsmen.filter(c=>c.status==='free').length}</b><span>حرفيون متاحون الآن</span></div>
+    <div class="stat-card"><b>${DB.messages.length}</b><span>رسائل واردة</span></div>
+  </div>
+  <button class="btn btn-brass" onclick="refreshAll()">🔄 تحديث البيانات</button>`;
 }
 
 /* ---------- المنتجات ---------- */
 function renderProducts(){
-  const tbody = document.querySelector('#productsTable tbody');
-  if(DATA.products.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="7">لا توجد منتجات</td></tr>'; return; }
-  tbody.innerHTML = DATA.products.map(p=>`
-    <tr>
-      <td>${p.id}</td>
-      <td>${escapeHtml(p.name)}</td>
-      <td>${escapeHtml(p.desc||'')}</td>
-      <td>${p.price.toLocaleString('ar-DZ')} دج</td>
-      <td>
-        <input class="mini-input" type="number" value="${p.stock}" id="stock-${p.id}">
-        <button class="mini-btn mini-brass" onclick="updateStock(${p.id})">حفظ</button>
-        ${p.stock<=5?'<span class="low-flag"> منخفض</span>':''}
-      </td>
-      <td>${escapeHtml(p.colors||'')}</td>
-      <td><button class="mini-btn mini-red" onclick="deleteProduct(${p.id})">حذف</button></td>
-    </tr>`).join('');
+  setTimeout(()=>{
+    document.getElementById('addProductBtn')?.addEventListener('click', addProduct);
+  },0);
+  return `<div class="admin-form">
+    <h3 style="margin-bottom:12px;">إضافة منتج جديد</h3>
+    <div class="row">
+      <input id="npName" placeholder="اسم المنتج">
+      <input id="npDesc" placeholder="وصف مختصر">
+      <input id="npPrice" type="number" placeholder="السعر (دج)">
+      <input id="npStock" type="number" placeholder="الكمية بالمستودع">
+      <button class="btn btn-brass" id="addProductBtn">إضافة</button>
+    </div>
+  </div>
+  <table><thead><tr><th>المنتج</th><th>السعر</th><th>المخزون</th><th>إجراء</th></tr></thead>
+  <tbody>${DB.products.map(p=>`<tr>
+    <td>${esc(p.name)}</td><td>${fmt(p.price)}</td>
+    <td class="${p.stock<=5?'low-flag':''}">${p.stock}</td>
+    <td><button class="mini-btn mini-red" onclick="deleteProduct(${p.id})">حذف</button></td>
+  </tr>`).join('') || '<tr><td colspan="4">لا توجد منتجات</td></tr>'}</tbody></table>`;
 }
-
 async function addProduct(){
-  const name = document.getElementById('pName').value.trim();
-  const price = Number(document.getElementById('pPrice').value);
-  const stock = Number(document.getElementById('pStock').value);
-  const desc = document.getElementById('pDesc').value.trim();
-  const colors = document.getElementById('pColors').value.split(',').map(c=>c.trim()).filter(Boolean);
-  if(!name || !price){ showToast('يرجى إدخال اسم وسعر المنتج'); return; }
-  const res = await callApi({ action:'addProduct', name, price, stock:stock||0, desc, colors });
-  if(res.ok){
-    ['pName','pPrice','pStock','pDesc','pColors'].forEach(id=>document.getElementById(id).value='');
-    showToast('تمت إضافة المنتج ✅');
-    loadAll();
-  } else showToast('حدث خطأ أثناء الإضافة');
+  const name = document.getElementById('npName').value.trim();
+  const desc = document.getElementById('npDesc').value.trim();
+  const price = parseFloat(document.getElementById('npPrice').value);
+  const stock = parseInt(document.getElementById('npStock').value);
+  if(!name||!price||!stock){ alert('أكمل جميع الحقول'); return; }
+  const palette = ['#B24B32','#1F5F58','#D9A441','#5B3A5C','#6E7F52'];
+  const colors = [palette[Math.floor(Math.random()*5)]];
+  const res = await callApi('addProduct', {name, desc, price, stock, colors, top:'linear-gradient(120deg,#332E28,#201D1A)'});
+  if(res.ok){ await refreshAll(); switchTab('products'); } else alert('فشلت الإضافة');
 }
-
-async function updateStock(id){
-  const val = Number(document.getElementById('stock-'+id).value);
-  const res = await callApi({ action:'updateStock', id, stock:val });
-  if(res.ok){ showToast('تم تحديث المخزون ✅'); loadAll(); }
-  else showToast('حدث خطأ أثناء التحديث');
-}
-
 async function deleteProduct(id){
-  if(!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
-  const res = await callApi({ action:'deleteProduct', id });
-  if(res.ok){ showToast('تم حذف المنتج ✅'); loadAll(); }
-  else showToast('حدث خطأ أثناء الحذف');
+  if(!confirm('تأكيد حذف هذا المنتج؟')) return;
+  const res = await callApi('deleteProduct', {id});
+  if(res.ok){ await refreshAll(); switchTab('products'); }
 }
 
-/* ---------- الحرفيون ---------- */
-const STATUS_LABEL = { free:'متاح الآن', busy:'مشغول', tomorrow:'متاح غدًا' };
-function renderCraftsmen(){
-  const tbody = document.querySelector('#craftsmenTable tbody');
-  if(DATA.craftsmen.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="5">لا يوجد حرفيون</td></tr>'; return; }
-  tbody.innerHTML = DATA.craftsmen.map(c=>`
-    <tr>
-      <td>${c.id}</td>
-      <td>${escapeHtml(c.name)}</td>
-      <td>${escapeHtml(c.spec||'')}</td>
-      <td>${c.rating}</td>
-      <td>
-        <select class="status-select" onchange="updateCraftStatus(${c.id}, this.value)">
-          <option value="free" ${c.status==='free'?'selected':''}>متاح الآن</option>
-          <option value="busy" ${c.status==='busy'?'selected':''}>مشغول</option>
-          <option value="tomorrow" ${c.status==='tomorrow'?'selected':''}>متاح غدًا</option>
-        </select>
-      </td>
-    </tr>`).join('');
+/* ---------- المستودع ---------- */
+function renderWarehouse(){
+  return `<table><thead><tr><th>المنتج</th><th>الكمية الحالية</th><th>تعديل الكمية</th></tr></thead>
+  <tbody>${DB.products.map(p=>`<tr>
+    <td>${esc(p.name)}</td>
+    <td class="${p.stock<=5?'low-flag':''}">${p.stock} ${p.stock<=5?'⚠️':''}</td>
+    <td><input class="mini-input" type="number" id="stock-${p.id}" value="${p.stock}">
+      <button class="mini-btn mini-brass" onclick="updateStock(${p.id})">تحديث</button></td>
+  </tr>`).join('') || '<tr><td colspan="3">لا توجد منتجات</td></tr>'}</tbody></table>`;
 }
-async function updateCraftStatus(id, status){
-  const res = await callApi({ action:'updateCraftStatus', id, status });
-  if(res.ok) showToast('تم تحديث حالة الحرفي ✅');
-  else showToast('حدث خطأ أثناء التحديث');
+async function updateStock(id){
+  const val = parseInt(document.getElementById('stock-'+id).value);
+  const res = await callApi('updateStock', {id, stock:val});
+  if(res.ok){ await refreshAll(); switchTab('warehouse'); }
 }
 
-/* ---------- الطلبات ---------- */
+/* ---------- معرض الأعمال ---------- */
+function renderGallery(){
+  return `<div class="admin-form">
+    <h3 style="margin-bottom:12px;">إضافة صورة للمعرض</h3>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:10px;">استخدم رابط صورة مباشر (من Google Drive بصيغة مشاركة عامة، أو Imgur، أو أي استضافة صور).</p>
+    <div class="row">
+      <input id="ngTitle" placeholder="عنوان الصورة (مثال: صالون بلمسة ذهبية)">
+      <input id="ngImage" placeholder="رابط الصورة المباشر (https://...)">
+      <button class="btn btn-brass" onclick="addGallery()">إضافة للمعرض</button>
+    </div>
+  </div>
+  <table><thead><tr><th>معاينة</th><th>العنوان</th><th>إجراء</th></tr></thead>
+  <tbody>${DB.gallery.map(g=>`<tr>
+    <td>${g.image && String(g.image).startsWith('http') ? `<img class="gal-thumb" src="${esc(g.image)}">` : '—'}</td>
+    <td>${esc(g.title)}</td>
+    <td><button class="mini-btn mini-red" onclick="deleteGallery(${g.id})">حذف</button></td>
+  </tr>`).join('') || '<tr><td colspan="3">لا توجد صور بعد</td></tr>'}</tbody></table>`;
+}
+async function addGallery(){
+  const title = document.getElementById('ngTitle').value.trim();
+  const image = document.getElementById('ngImage').value.trim();
+  if(!title || !image){ alert('أكمل العنوان ورابط الصورة'); return; }
+  const res = await callApi('addGallery', {title, image});
+  if(res.ok){ await refreshAll(); switchTab('gallery'); } else alert('فشلت الإضافة');
+}
+async function deleteGallery(id){
+  if(!confirm('حذف هذه الصورة من المعرض؟')) return;
+  const res = await callApi('deleteGallery', {id});
+  if(res.ok){ await refreshAll(); switchTab('gallery'); }
+}
+
+/* ---------- الطلبات والديون ---------- */
 function renderOrders(){
-  const tbody = document.querySelector('#ordersTable tbody');
-  if(DATA.orders.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="4">لا توجد طلبات بعد</td></tr>'; return; }
-  tbody.innerHTML = DATA.orders.slice().reverse().map(o=>{
-    let items = [];
-    try{ items = JSON.parse(o.itemsJson); }catch(e){}
-    const itemsText = items.map(i=>`${escapeHtml(i.name)} × ${i.qty}`).join('، ');
+  if(DB.orders.length===0) return '<div class="empty-note">لا توجد طلبات بعد</div>';
+  return `<table><thead><tr><th>رقم</th><th>الزبون</th><th>الهاتف</th><th>التاريخ</th><th>الإجمالي</th><th>المدفوع</th><th>المتبقي</th><th>تسجيل دفعة</th></tr></thead>
+  <tbody>${DB.orders.map(o=>{
+    const cls = o.remaining<=0?'pay-full':(o.paid>0?'pay-partial':'pay-none');
+    const label = o.remaining<=0?'مدفوع بالكامل':(o.paid>0?'جزئي':'غير مدفوع');
     return `<tr>
-      <td>${o.id}</td>
-      <td>${itemsText}</td>
-      <td>${Number(o.total).toLocaleString('ar-DZ')} دج</td>
-      <td>${formatDate(o.date)}</td>
+      <td>#${o.id}</td><td>${esc(o.name)}</td><td>${esc(o.phone)}</td>
+      <td>${formatDate(o.date)}</td><td>${fmt(o.total)}</td>
+      <td>${fmt(o.paid)}</td>
+      <td class="${cls}">${fmt(o.remaining)} <br><small>${label}</small></td>
+      <td><input class="mini-input" type="number" id="paid-${o.id}" placeholder="مبلغ">
+        <button class="mini-btn mini-brass" onclick="updatePayment(${o.id})">تسجيل</button></td>
     </tr>`;
-  }).join('');
+  }).join('')}</tbody></table>`;
 }
-
-/* ---------- الرسائل ---------- */
-function renderMessages(){
-  const tbody = document.querySelector('#messagesTable tbody');
-  if(DATA.messages.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="6">لا توجد رسائل بعد</td></tr>'; return; }
-  tbody.innerHTML = DATA.messages.slice().reverse().map(m=>`
-    <tr>
-      <td>${m.id}</td>
-      <td>${escapeHtml(m.name)}</td>
-      <td>${escapeHtml(m.phone)}</td>
-      <td>${escapeHtml(m.craft||'-')}</td>
-      <td>${escapeHtml(m.msg)}</td>
-      <td>${formatDate(m.date)}</td>
-    </tr>`).join('');
+async function updatePayment(id){
+  const val = parseFloat(document.getElementById('paid-'+id).value);
+  if(isNaN(val)){ alert('أدخل مبلغًا صحيحًا'); return; }
+  const res = await callApi('updatePayment', {id, paid: val});
+  if(res.ok){ await refreshAll(); switchTab('orders'); }
 }
+function formatDate(d){ try{ return new Date(d).toLocaleDateString('ar-DZ'); }catch(e){ return d||''; } }
 
-/* ---------- المالية ---------- */
+/* ---------- المصريف ---------- */
 function renderFinance(){
-  const tbody = document.querySelector('#financeTable tbody');
-  if(DATA.finance.length===0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="4">لا توجد حركات مالية</td></tr>'; return; }
-  tbody.innerHTML = DATA.finance.slice().reverse().map(f=>`
-    <tr>
-      <td>${f.id}</td>
-      <td>${f.type==='income'?'دخل':'مصروف'}</td>
-      <td>${escapeHtml(f.label)}</td>
-      <td>${f.amount.toLocaleString('ar-DZ')} دج</td>
-    </tr>`).join('');
+  const income = DB.finance.filter(f=>f.type==='income').reduce((a,f)=>a+f.amount,0);
+  const expense = DB.finance.filter(f=>f.type==='expense').reduce((a,f)=>a+f.amount,0);
+  return `<div class="stat-grid">
+    <div class="stat-card"><b>${fmt(income)}</b><span>إجمالي الإيرادات</span></div>
+    <div class="stat-card warn"><b>${fmt(expense)}</b><span>إجمالي المصروفات</span></div>
+    <div class="stat-card"><b>${fmt(income-expense)}</b><span>الرصيد الصافي</span></div>
+  </div>
+  <div class="admin-form">
+    <h3 style="margin-bottom:12px;">إضافة حركة مالية</h3>
+    <div class="row">
+      <select id="fType"><option value="income">إيراد</option><option value="expense">مصروف</option></select>
+      <input id="fLabel" placeholder="الوصف">
+      <input id="fAmount" type="number" placeholder="المبلغ (دج)">
+      <button class="btn btn-brass" onclick="addFinance()">إضافة</button>
+    </div>
+  </div>
+  <table><thead><tr><th>النوع</th><th>الوصف</th><th>المبلغ</th></tr></thead>
+  <tbody>${DB.finance.map(f=>`<tr><td>${f.type==='income'?'إيراد 🟢':'مصروف 🔴'}</td><td>${esc(f.label)}</td><td>${fmt(f.amount)}</td></tr>`).join('')}</tbody></table>`;
 }
 async function addFinance(){
   const type = document.getElementById('fType').value;
   const label = document.getElementById('fLabel').value.trim();
-  const amount = Number(document.getElementById('fAmount').value);
-  if(!label || !amount){ showToast('يرجى إدخال الوصف والمبلغ'); return; }
-  const res = await callApi({ action:'addFinance', type, label, amount });
-  if(res.ok){
-    document.getElementById('fLabel').value=''; document.getElementById('fAmount').value='';
-    showToast('تمت إضافة الحركة المالية ✅');
-    loadAll();
-  } else showToast('حدث خطأ أثناء الإضافة');
+  const amount = parseFloat(document.getElementById('fAmount').value);
+  if(!label||!amount){ alert('أكمل الحقول'); return; }
+  const res = await callApi('addFinance', {type, label, amount});
+  if(res.ok){ await refreshAll(); switchTab('finance'); }
 }
 
-/* ---------- أدوات مساعدة ---------- */
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+/* ---------- الحرفيون ---------- */
+function renderCraftsmen(){
+  return `<table><thead><tr><th>الاسم</th><th>التخصص</th><th>الحالة</th><th>تغيير الحالة</th></tr></thead>
+  <tbody>${DB.craftsmen.map(c=>`<tr>
+    <td>${esc(c.name)}</td><td>${esc(c.spec)}</td><td>${c.status}</td>
+    <td><select onchange="setCraftStatus(${c.id}, this.value)">
+      <option value="free" ${c.status==='free'?'selected':''}>متاح الآن</option>
+      <option value="busy" ${c.status==='busy'?'selected':''}>مشغول</option>
+      <option value="tomorrow" ${c.status==='tomorrow'?'selected':''}>متاح غدًا</option>
+    </select></td>
+  </tr>`).join('') || '<tr><td colspan="4">لا يوجد حرفيون</td></tr>'}</tbody></table>`;
 }
-function escapeHtml(str){
-  return String(str??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+async function setCraftStatus(id, status){
+  const res = await callApi('updateCraftStatus', {id, status});
+  if(res.ok){ await refreshAll(); switchTab('craftsmen'); }
 }
-function formatDate(iso){
-  const d = new Date(iso);
-  if(isNaN(d)) return iso;
-  return d.toLocaleString('ar-DZ');
+
+/* ---------- الرسائل ---------- */
+function renderMessages(){
+  if(DB.messages.length===0) return '<div class="empty-note">لا توجد رسائل بعد</div>';
+  return `<table><thead><tr><th>الاسم</th><th>الهاتف</th><th>الحرفي المطلوب</th><th>الرسالة</th><th>التاريخ</th></tr></thead>
+  <tbody>${DB.messages.map(m=>`<tr><td>${esc(m.name)}</td><td>${esc(m.phone)}</td><td>${esc(m.craft)}</td><td>${esc(m.msg)}</td><td>${formatDate(m.date)}</td></tr>`).join('')}</tbody></table>`;
+}
+
+/* ---------- طلبات الانضمام كحرفي ---------- */
+function renderApplications(){
+  if(DB.applications.length===0) return '<div class="empty-note">لا توجد طلبات انضمام بعد</div>';
+  return `<table><thead><tr><th>الاسم</th><th>الهاتف</th><th>التخصص</th><th>الخبرة</th><th>نبذة</th><th>التاريخ</th></tr></thead>
+  <tbody>${DB.applications.map(a=>`<tr>
+    <td>${esc(a.name)}</td><td>${esc(a.phone)}</td><td>${esc(a.spec)}</td>
+    <td>${esc(a.experience)} سنة</td><td>${esc(a.msg)}</td><td>${formatDate(a.date)}</td>
+  </tr>`).join('')}</tbody></table>`;
 }
 </script>
 </body>
