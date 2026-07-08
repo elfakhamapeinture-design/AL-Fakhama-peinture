@@ -55,15 +55,23 @@
   .hero-stat b{font-family:'El Messiri',serif;font-size:26px;display:block;}
   .hero-stat span{font-size:13px;color:var(--muted);}
 
-  .fan{position:relative;height:380px;display:flex;align-items:center;justify-content:center;}
-  .chip{position:absolute;width:150px;height:220px;border-radius:16px;box-shadow:0 18px 40px rgba(32,29,26,.22);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:14px;color:#fff;font-weight:700;font-size:14px;text-align:center;transition:transform .35s ease;}
+  .fan{position:relative;height:420px;width:100%;display:flex;align-items:center;justify-content:center;}
+  .chip{position:absolute;width:150px;height:220px;border-radius:16px;box-shadow:0 18px 40px rgba(32,29,26,.22);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:14px;color:#fff;font-weight:700;font-size:14px;text-align:center;transition:transform .35s ease;background-size:cover;background-position:center;overflow:hidden;}
   .chip:hover{transform:translateY(-14px) !important;}
   .chip small{display:block;font-weight:400;font-size:11px;opacity:.9;margin-top:3px;font-family:'Tajawal';}
-  .chip-icon{width:38px;height:38px;margin-bottom:auto;margin-top:6px;opacity:.95;}
-  .chip.c1{background:linear-gradient(160deg,var(--teal),#123f3a);transform:rotate(-18deg) translateX(70px);z-index:1;}
-  .chip.c2{background:linear-gradient(160deg,var(--mustard),#b9822a);transform:rotate(-6deg) translateX(35px);z-index:2;}
-  .chip.c3{background:linear-gradient(160deg,var(--plum),#3d2740);transform:rotate(6deg) translateX(-35px);z-index:3;}
-  .chip.c4{background:linear-gradient(160deg,#7A7266,#524c42);transform:rotate(18deg) translateX(-70px);z-index:4;}
+  .chip-caption{position:relative;z-index:1;}
+  .chip.c1{background-image:linear-gradient(160deg,var(--teal),#123f3a);transform:rotate(-28deg) translate(112px, 18px);z-index:1;}
+  .chip.c2{background-image:linear-gradient(160deg,var(--mustard),#b9822a);transform:rotate(-10deg) translate(42px, -14px);z-index:2;}
+  .chip.c3{background-image:linear-gradient(160deg,var(--plum),#3d2740);transform:rotate(10deg) translate(-42px, -14px);z-index:3;}
+  .chip.c4{background-image:linear-gradient(160deg,#7A7266,#524c42);transform:rotate(28deg) translate(-112px, 18px);z-index:4;}
+  @media(max-width:900px){
+    .fan{height:340px;}
+    .chip{width:120px;height:180px;}
+    .chip.c1{transform:rotate(-24deg) translate(78px, 14px);}
+    .chip.c2{transform:rotate(-8deg) translate(30px, -10px);}
+    .chip.c3{transform:rotate(8deg) translate(-30px, -10px);}
+    .chip.c4{transform:rotate(24deg) translate(-78px, 14px);}
+  }
 
   section{padding:64px 0;}
   .section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:34px;flex-wrap:wrap;gap:14px;}
@@ -221,34 +229,17 @@
       </div>
     </div>
     <div class="fan">
-      <div class="chip c1">
-        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2C12 2 6 9.5 6 14a6 6 0 0012 0c0-4.5-6-12-6-12z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
-          <path d="M9 14.5c0 1.6 1.3 2.5 3 2.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>
-        لاك مائي<small>يمكن غسله بالماء</small>
+      <div class="chip c1" data-key="waterLacquer">
+        <div class="chip-caption">لاك مائي<small>يمكن غسله بالماء</small></div>
       </div>
-      <div class="chip c2">
-        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="9" width="14" height="9" rx="2" stroke="#fff" stroke-width="1.6"/>
-          <path d="M17 12l4-2.2v7.4L17 15" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
-        </svg>
-        ساتان<small>يمكن مسحه</small>
+      <div class="chip c2" data-key="satin">
+        <div class="chip-caption">ساتان<small>يمكن مسحه</small></div>
       </div>
-      <div class="chip c3">
-        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="12" cy="6" rx="7" ry="2.4" stroke="#fff" stroke-width="1.6"/>
-          <path d="M5 6v9c0 1.3 3.1 2.4 7 2.4s7-1.1 7-2.4V6" stroke="#fff" stroke-width="1.6"/>
-        </svg>
-        فينيل<small>Vinyl</small>
+      <div class="chip c3" data-key="vinyl">
+        <div class="chip-caption">فينيل<small>Vinyl</small></div>
       </div>
-      <div class="chip c4">
-        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" xmlns="https://i.postimg.cc/Y0tTRJqf/de937976-6e15-4e58-b4e8-cbab5d76d0e4.jpg">
-          <rect x="3" y="4" width="12" height="6" rx="1.5" stroke="#fff" stroke-width="1.6"/>
-          <path d="M9 10v10" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M6 20h6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-        طلاء عادي<small>اقتصادي</small>
+      <div class="chip c4" data-key="economic">
+        <div class="chip-caption">طلاء عادي<small>اقتصادي</small></div>
       </div>
     </div>
   </div>
@@ -262,7 +253,7 @@
     </div>
     <div class="search-bar">
       <div class="search-input-wrap">
-        <input type="text" id="productSearch" placeholder="ابحث عن منتج… (مثال: لاك، ورنيش، مائي)" oninput="handleProductSearch()">
+        <input type="text" id="productSearch" placeholder="ابحث عن منتج… (مثال: لاك، ورنيش، مائي)" oninput="handleProductSearch()" onkeydown="if(event.key==='Escape')clearProductSearch()">
         <span class="search-icon">🔍</span>
       </div>
       <select id="productSort" onchange="handleProductSearch()">
@@ -422,6 +413,24 @@ let REVIEWS_DATA = [];
 let SELECTED_RATING = 5;
 let CART = []; // {id,name,price,color,qty}
 
+/* ====== ضع هنا روابط صور الملصقات الأربعة في الأعلى (رابط مباشر لصورة .jpg / .png / .webp) ======
+   اترك القيمة فارغة "" لإبقاء التدرّج اللوني الافتراضي بدل الصورة. */
+const CHIP_IMAGES = {
+  waterLacquer: "", // لاك مائي — يمكن غسله بالماء
+  satin: "",        // ساتان — يمكن مسحه
+  vinyl: "",        // فينيل
+  economic: ""      // طلاء عادي اقتصادي
+};
+function applyChipImages(){
+  document.querySelectorAll('.chip[data-key]').forEach(el=>{
+    const url = CHIP_IMAGES[el.dataset.key];
+    if(url){
+      el.style.backgroundImage = `linear-gradient(0deg, rgba(0,0,0,.68), rgba(0,0,0,.15) 55%, rgba(0,0,0,.05)), url('${url.replace(/'/g,"%27")}')`;
+    }
+  });
+}
+applyChipImages();
+
 const STATUS_LABEL = { free:'متاح الآن', busy:'مشغول', tomorrow:'متاح غدًا' };
 const STATUS_CLASS = { free:'badge-free', busy:'badge-busy', tomorrow:'badge-tomorrow' };
 
@@ -515,7 +524,7 @@ function renderProducts(){
   if(q){
     meta.style.display = 'block';
     meta.innerHTML = list.length
-      ? `تم العثور على <b>${list.length}</b> منتج${list.length>1?'ات':''} لـ "<b>${escapeHtml(document.getElementById('productSearch').value.trim())}</b>"`
+      ? `تم العثور على <b>${arCount(list.length, 'واحد', 'منتجان', 'منتجات')}</b> لـ "<b>${escapeHtml(document.getElementById('productSearch').value.trim())}</b>"`
       : '';
   } else {
     meta.style.display = 'none';
@@ -534,12 +543,14 @@ function renderProducts(){
     const stockClass = p.stock<=0 ? 'stock-out' : (p.stock<=5 ? 'stock-low' : 'stock-ok');
     const stockText = p.stock<=0 ? 'نفدت الكمية' : (p.stock<=5 ? 'كمية محدودة ('+p.stock+')' : 'متوفر ('+p.stock+')');
     const swatches = p.colors.map(c=>`<span class="sw" style="background:${c}"></span>`).join('');
+    const nameHtml = q ? highlightMatch(p.name, q) : escapeHtml(p.name);
+    const descHtml = q ? highlightMatch(p.desc||'', q) : escapeHtml(p.desc||'');
     return `
     <div class="card">
       <div class="p-top" style="background:${p.top || 'linear-gradient(120deg,#332E28,#201D1A)'}"></div>
       <div class="p-body">
-        <h3>${escapeHtml(p.name)}</h3>
-        <p class="p-desc">${escapeHtml(p.desc||'')}</p>
+        <h3>${nameHtml}</h3>
+        <p class="p-desc">${descHtml}</p>
         <div class="swatches">${swatches}</div>
         <div class="p-foot">
           <span class="price">${p.price.toLocaleString('ar-DZ')} دج</span>
@@ -807,6 +818,21 @@ function escapeHtml(str){
   return String(str??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 function escapeAttr(str){ return String(str??'').replace(/'/g, "%27"); }
+
+function arCount(n, singular, dual, plural){
+  if(n===1) return `منتج ${singular}`;
+  if(n===2) return dual;
+  if(n>=3 && n<=10) return `${n} ${plural}`;
+  return `${n} منتجًا`;
+}
+function highlightMatch(text, q){
+  if(!q) return escapeHtml(text);
+  const safe = escapeHtml(text);
+  const safeQ = escapeHtml(q);
+  const idx = safe.toLowerCase().indexOf(safeQ.toLowerCase());
+  if(idx === -1) return safe;
+  return safe.slice(0,idx) + '<mark style="background:var(--brass-light,#D9AF5D);color:var(--ink);border-radius:3px;padding:0 2px;">' + safe.slice(idx, idx+safeQ.length) + '</mark>' + safe.slice(idx+safeQ.length);
+}
 
 loadData();
 </script>
