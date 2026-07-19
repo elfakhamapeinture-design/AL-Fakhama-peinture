@@ -120,6 +120,18 @@
   .search-bar{display:flex;gap:10px;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px 8px 8px 16px;box-shadow:var(--shadow);margin-bottom:26px;flex-wrap:wrap;}
   .search-bar .search-input-wrap{flex:1;min-width:220px;position:relative;display:flex;align-items:center;}
   .search-bar .search-icon{position:absolute;right:14px;color:var(--muted);pointer-events:none;font-size:15px;}
+  .scan-btn{background:var(--ink);color:#fff;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;transition:background .15s;}
+  .scan-btn:hover{background:var(--brass);}
+
+  .scanner-overlay{position:fixed;inset:0;background:rgba(20,18,15,.82);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
+  .scanner-overlay.show{display:flex;}
+  .scanner-box{background:#fff;border-radius:18px;width:100%;max-width:420px;overflow:hidden;box-shadow:var(--shadow);}
+  .scanner-head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line);}
+  .scanner-head h3{font-size:17px;}
+  #scannerReader{width:100%;background:#000;min-height:260px;}
+  #scannerReader video{width:100% !important;}
+  .scanner-hint{padding:14px 18px;color:var(--muted);font-size:13px;text-align:center;}
+  .scanner-status{padding:0 18px 14px;color:var(--terracotta);font-size:13px;text-align:center;display:none;}
   .search-bar input[type="text"]{width:100%;padding:11px 40px 11px 14px;border-radius:10px;border:1.5px solid transparent;background:var(--canvas-warm);font-family:inherit;font-size:14.5px;transition:border-color .15s, background .15s;}
   .search-bar input[type="text"]:focus{outline:none;border-color:var(--brass);background:#fff;}
   .search-bar select{padding:11px 14px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--ink-soft);flex-shrink:0;}
@@ -209,6 +221,7 @@
   .wa-float{position:fixed;bottom:24px;right:24px;background:#25D366;color:#fff;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(37,211,102,.45);z-index:80;font-size:28px;transition:transform .2s;}
   .wa-float:hover{transform:scale(1.08);}
 </style>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 </head>
 <body>
 
@@ -274,6 +287,7 @@
         <input type="text" id="productSearch" placeholder="ابحث بالاسم أو امسح الكود بار…" oninput="handleProductSearch()" onkeydown="if(event.key==='Escape')clearProductSearch()">
         <span class="search-icon">🔍</span>
       </div>
+      <button type="button" class="scan-btn" onclick="openScanner()" title="مسح الكود بار بالكاميرا">📷</button>
       <select id="productSort" onchange="handleProductSearch()">
         <option value="default">الترتيب الافتراضي</option>
         <option value="price-asc">السعر: من الأقل للأعلى</option>
@@ -421,9 +435,18 @@
   </div>
 </div>
 
+<div class="scanner-overlay" id="scannerOverlay" onclick="if(event.target===this)closeScanner()">
+  <div class="scanner-box">
+    <div class="scanner-head"><h3>مسح الكود بار</h3><button class="close-x" onclick="closeScanner()">✕</button></div>
+    <div id="scannerReader"></div>
+    <div class="scanner-status" id="scannerStatus"></div>
+    <p class="scanner-hint">وجّه كاميرا هاتفك نحو الكود بار على المنتج، سيتم البحث عنه تلقائيًا</p>
+  </div>
+</div>
+
 <script>
 /* ====== رابط الويب أب الخاص بجوجل شيت (نفس الرابط في admin.html و customer.html) ====== */
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbySP0yO9G4EzhRlU9BPZnCANHAXGkjGYAuJ9vnru1fzYkvOVi-PXexWFKOU4D_6GdqEeA/exec";
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw9pXmR6Ld2udQvMa7sVIantLMJkEGzPlIUH9K55YTws962VmVp_GtXNtNVzNVmdl7r_g/exec";
 
 /* ضع رابط شعار المحل هنا عند توفره (رابط مباشر لصورة)، وسيظهر تلقائيًا بدل الرمز الافتراضي */
 const LOGO_URL = document.getElementById('favicon').href;
@@ -891,6 +914,77 @@ async function submitContact(e){
     console.error(err);
   }
   btn.disabled = false; btn.textContent = 'إرسال الطلب';
+}
+
+/* ---------- مسح الكود بار بكاميرا الهاتف ---------- */
+let scannerInstance = null;
+let scannerIsRunning = false;
+
+function openScanner(){
+  const overlay = document.getElementById('scannerOverlay');
+  const statusEl = document.getElementById('scannerStatus');
+  statusEl.style.display = 'none';
+  overlay.classList.add('show');
+
+  if(typeof Html5Qrcode === 'undefined'){
+    statusEl.style.display = 'block';
+    statusEl.textContent = 'تعذّر تحميل أداة المسح، تحقق من الاتصال بالإنترنت.';
+    return;
+  }
+
+  const formatsToSupport = [
+    Html5QrcodeSupportedFormats.EAN_13,
+    Html5QrcodeSupportedFormats.EAN_8,
+    Html5QrcodeSupportedFormats.UPC_A,
+    Html5QrcodeSupportedFormats.UPC_E,
+    Html5QrcodeSupportedFormats.CODE_128,
+    Html5QrcodeSupportedFormats.CODE_39,
+    Html5QrcodeSupportedFormats.QR_CODE
+  ];
+  scannerInstance = new Html5Qrcode("scannerReader", { formatsToSupport, verbose:false });
+
+  Html5Qrcode.getCameras().then(cameras=>{
+    if(!cameras || cameras.length===0){
+      statusEl.style.display = 'block';
+      statusEl.textContent = 'لم يتم العثور على كاميرا على هذا الجهاز.';
+      return;
+    }
+    const backCam = cameras.find(c=>/back|rear|environment/i.test(c.label));
+    const cameraId = (backCam || cameras[cameras.length-1]).id;
+
+    scannerInstance.start(
+      cameraId,
+      { fps:10, qrbox:{width:250,height:150} },
+      (decodedText)=>{
+        if(!scannerIsRunning) return; // تفادي معالجة نفس المسح مرتين
+        document.getElementById('productSearch').value = decodedText;
+        PRODUCTS_VISIBLE_COUNT = PRODUCTS_PAGE_SIZE;
+        renderProducts();
+        const found = PRODUCTS.some(p => String(p.barcode||'').trim() === decodedText);
+        showToast(found ? 'تم إيجاد المنتج ✅' : 'لم يُعثر على منتج بهذا الكود: ' + decodedText);
+        closeScanner();
+      },
+      ()=>{ /* أخطاء المسح المتكررة (لا يوجد كود بار في الإطار) تُتجاهل بصمت */ }
+    ).then(()=>{ scannerIsRunning = true; })
+    .catch(()=>{
+      statusEl.style.display = 'block';
+      statusEl.textContent = 'تعذّر تشغيل الكاميرا. تأكد من منح إذن الكاميرا للموقع.';
+    });
+  }).catch(()=>{
+    statusEl.style.display = 'block';
+    statusEl.textContent = 'تعذّر الوصول إلى الكاميرا. تأكد من منح إذن الكاميرا للمتصفح.';
+  });
+}
+
+function closeScanner(){
+  document.getElementById('scannerOverlay').classList.remove('show');
+  if(scannerInstance && scannerIsRunning){
+    scannerIsRunning = false;
+    scannerInstance.stop().then(()=>{
+      scannerInstance.clear();
+      scannerInstance = null;
+    }).catch(()=>{ scannerInstance = null; });
+  }
 }
 
 /* ---------- أدوات مساعدة ---------- */
