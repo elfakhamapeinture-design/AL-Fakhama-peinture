@@ -271,7 +271,7 @@
     </div>
     <div class="search-bar">
       <div class="search-input-wrap">
-        <input type="text" id="productSearch" placeholder="ابحث عن منتج… (مثال: لاك، ورنيش، مائي)" oninput="handleProductSearch()" onkeydown="if(event.key==='Escape')clearProductSearch()">
+        <input type="text" id="productSearch" placeholder="ابحث بالاسم أو امسح الكود بار…" oninput="handleProductSearch()" onkeydown="if(event.key==='Escape')clearProductSearch()">
         <span class="search-icon">🔍</span>
       </div>
       <select id="productSort" onchange="handleProductSearch()">
@@ -423,7 +423,7 @@
 
 <script>
 /* ====== رابط الويب أب الخاص بجوجل شيت (نفس الرابط في admin.html و customer.html) ====== */
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyWqDH1ZGLc4EChwa0w1jJYpIQuV0CgRn7q8xkK3GIJ9F-y8WdKDOv1fXrGkQorpcot0Q/exec";
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbySP0yO9G4EzhRlU9BPZnCANHAXGkjGYAuJ9vnru1fzYkvOVi-PXexWFKOU4D_6GdqEeA/exec";
 
 /* ضع رابط شعار المحل هنا عند توفره (رابط مباشر لصورة)، وسيظهر تلقائيًا بدل الرمز الافتراضي */
 const LOGO_URL = document.getElementById('favicon').href;
@@ -499,6 +499,7 @@ async function loadData(){
       stock: Number(p.stock) || 0,
       category: (p.category && String(p.category).trim()) || 'أخرى',
       image: p.image && String(p.image).startsWith('http') ? p.image : '',
+      barcode: String(p.barcode || '').trim(),
       colors: typeof p.colors === 'string' ? p.colors.split(',').filter(Boolean) : (p.colors||[])
     }));
     CRAFTSMEN = data.craftsmen || [];
@@ -564,7 +565,8 @@ function getFilteredSortedProducts(){
   if(q){
     list = list.filter(p =>
       (p.name||'').toLowerCase().includes(q) ||
-      (p.desc||'').toLowerCase().includes(q)
+      (p.desc||'').toLowerCase().includes(q) ||
+      (p.barcode||'').toLowerCase().includes(q)
     );
   }
   list = [...list];
