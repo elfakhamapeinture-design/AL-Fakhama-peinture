@@ -124,18 +124,11 @@
     <!-- LEFT: connection + products + queue -->
     <div>
       <div class="panel">
-        <h2>الاتصال بجوجل شيت</h2>
-        <label class="field">
-          <span>رابط الويب أب (Web App URL)</span>
-          <input type="text" id="apiUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec" value="https://script.google.com/macros/s/AKfycbxBIh_dimTzoV2KWpFoTzil0M6VbgPITsuhRzvfoRGMq_3GVMjrR1Xxh_5tKI_e3YnG8w/exec" />
-        </label>
+        <h2>منتجات متجر الفخامة للدهن</h2>
         <div class="btn-row">
-          <button class="btn-primary" onclick="loadProducts()">تحميل المنتجات</button>
+          <button class="btn-primary" onclick="loadProducts()">إعادة تحميل المنتجات</button>
         </div>
         <div class="err" id="connErr" style="display:none;"></div>
-        <div class="hint">
-          الرابط تلقاه من: <b>Deploy → Manage deployments</b> في محرر Apps Script الخاص بشيت المتجر. الأداة تجيب فقط الحقول العامة (بدون أسعار الشراء أو الجملة).
-        </div>
       </div>
 
       <div class="panel" id="productsPanel" style="display:none;">
@@ -209,22 +202,17 @@ const sizeMap = {
 };
 function mmToPx(mm){ return mm * 3.7795275591; }
 
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxBIh_dimTzoV2KWpFoTzil0M6VbgPITsuhRzvfoRGMq_3GVMjrR1Xxh_5tKI_e3YnG8w/exec";
+
 let allProducts = [];
 let queue = []; // {id, name, barcode, qty}
 
-function saveUrlHint(){}
-
 async function loadProducts(){
-  const url = document.getElementById('apiUrl').value.trim();
+  const url = SHEET_API_URL;
   const errEl = document.getElementById('connErr');
   const dot = document.getElementById('connDot');
   const connText = document.getElementById('connText');
   errEl.style.display = 'none';
-  if(!url){
-    errEl.textContent = 'الرجاء وضع رابط الويب أب أولاً.';
-    errEl.style.display = 'block';
-    return;
-  }
   connText.textContent = 'جاري التحميل...';
   try{
     const res = await fetch(url, {method:'GET'});
@@ -415,9 +403,7 @@ function doPrint(){
 }
 
 renderQueue();
-if(document.getElementById('apiUrl').value.trim()){
-  loadProducts();
-}
+loadProducts();
 </script>
 
 </body>
