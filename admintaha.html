@@ -23,6 +23,7 @@
   .btn{padding:9px 16px;border-radius:9px;font-weight:700;font-size:13.5px;}
   .btn-ghost{background:transparent;border:1.5px solid #fff;color:#fff;}
   .btn-brass{background:var(--brass);color:#fff;}
+  .btn-brass:disabled{opacity:0.6;cursor:not-allowed;}
   .body{max-width:1180px;margin:0 auto;padding:30px 24px 70px;}
   .login-box{max-width:360px;margin:80px auto;background:#fff;padding:34px;border-radius:16px;box-shadow:var(--shadow);text-align:center;}
   .login-box input{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);font-size:14px;margin-bottom:14px;}
@@ -35,21 +36,27 @@
   .stat-card b{font-family:'El Messiri',serif;font-size:26px;display:block;}
   .stat-card span{color:var(--muted);font-size:13px;}
   table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
-  th,td{padding:12px 14px;text-align:right;font-size:13.5px;border-bottom:1px solid var(--line);}
+  th,td{padding:12px 14px;text-align:right;font-size:13.5px;border-bottom:1px solid var(--line);vertical-align:middle;}
   th{background:var(--canvas-warm);font-weight:800;}
   .mini-btn{padding:6px 10px;border-radius:7px;font-size:12px;font-weight:700;}
   .mini-brass{background:var(--brass);color:#fff;}
   .mini-red{background:#f6dcd4;color:var(--terracotta);}
   .mini-input{width:75px;padding:6px 8px;border-radius:6px;border:1.5px solid var(--line);}
   .admin-form{background:#fff;border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:24px;}
-  .admin-form .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
-  .admin-form input,.admin-form select{padding:9px 12px;border-radius:8px;border:1.5px solid var(--line);font-family:inherit;font-size:13.5px;}
+  .admin-form .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end;}
+  .admin-form input,.admin-form select{padding:9px 12px;border-radius:8px;border:1.5px solid var(--line);font-family:inherit;font-size:13.5px;width:100%;}
+  .field-label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px;}
   .low-flag{color:var(--terracotta);font-weight:800;}
   .empty-note{color:var(--muted);text-align:center;padding:30px 0;}
   .pay-full{color:var(--sage);font-weight:800;}
   .pay-partial{color:#8a6a1f;font-weight:800;}
   .pay-none{color:var(--terracotta);font-weight:800;}
-  img.gal-thumb{width:60px;height:44px;object-fit:cover;border-radius:6px;}
+  img.gal-thumb{width:60px;height:44px;object-fit:cover;border-radius:6px;display:block;}
+  img.prod-thumb{width:56px;height:56px;object-fit:cover;border-radius:8px;display:block;margin-bottom:6px;background:var(--canvas-warm);}
+  .row-file{width:120px;font-size:11px;}
+  .upload-status{font-size:12.5px;color:var(--muted);margin-top:8px;display:none;}
+  .upload-status.err{color:var(--terracotta);}
+  .upload-status.ok{color:var(--sage);}
 </style>
 </head>
 <body>
@@ -138,13 +145,35 @@ async function callApi(action, payload){
   }
 }
 
+/* ---------- رفع الصور مباشرة من الجهاز ----------
+   يحوّل الملف المختار إلى base64 داخل المتصفح، ثم يرسله إلى الباك اند
+   عبر action=uploadImage، فيقوم Apps Script بحفظه في مجلد Drive المحدد
+   وإرجاع رابط مباشر يُستخدم مباشرة في حقل الصورة (image). */
+function fileToBase64(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = ()=> resolve(String(reader.result).split(',')[1]);
+    reader.onerror = ()=> reject(new Error('تعذّرت قراءة الملف'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadImageFile(file){
+  if(file.size > 8 * 1024 * 1024){
+    return {ok:false, error:'الملف كبير جدًا (الحد الأقصى 8 ميغابايت تقريبًا)'};
+  }
+  const base64 = await fileToBase64(file);
+  const res = await callApi('uploadImage', {base64, fileName:file.name, mimeType:file.type});
+  return res;
+}
+
 function switchTab(tab){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
   const c = document.getElementById('tabContent');
   if(tab==='overview')   c.innerHTML = renderOverview();
-  if(tab==='products')   c.innerHTML = renderProducts();
+  if(tab==='products')   { c.innerHTML = renderProducts(); bindProductsEvents(); }
   if(tab==='warehouse')  c.innerHTML = renderWarehouse();
-  if(tab==='gallery')    c.innerHTML = renderGallery();
+  if(tab==='gallery')    { c.innerHTML = renderGallery(); bindGalleryEvents(); }
   if(tab==='orders')     c.innerHTML = renderOrders();
   if(tab==='finance')    c.innerHTML = renderFinance();
   if(tab==='craftsmen')  c.innerHTML = renderCraftsmen();
@@ -174,37 +203,80 @@ function renderOverview(){
 
 /* ---------- المنتجات ---------- */
 function renderProducts(){
-  setTimeout(()=>{
-    document.getElementById('addProductBtn')?.addEventListener('click', addProduct);
-  },0);
   return `<div class="admin-form">
     <h3 style="margin-bottom:12px;">إضافة منتج جديد</h3>
     <div class="row">
-      <input id="npName" placeholder="اسم المنتج">
-      <input id="npDesc" placeholder="وصف مختصر">
-      <input id="npPrice" type="number" placeholder="السعر (دج)">
-      <input id="npStock" type="number" placeholder="الكمية بالمستودع">
+      <div><span class="field-label">اسم المنتج</span><input id="npName" placeholder="اسم المنتج"></div>
+      <div><span class="field-label">وصف مختصر</span><input id="npDesc" placeholder="وصف مختصر"></div>
+      <div><span class="field-label">السعر (دج)</span><input id="npPrice" type="number" placeholder="السعر"></div>
+      <div><span class="field-label">الكمية</span><input id="npStock" type="number" placeholder="الكمية بالمستودع"></div>
+      <div><span class="field-label">صورة المنتج (اختياري)</span><input type="file" id="npImageFile" accept="image/*"></div>
       <button class="btn btn-brass" id="addProductBtn">إضافة</button>
     </div>
+    <p id="npUploadStatus" class="upload-status"></p>
   </div>
-  <table><thead><tr><th>المنتج</th><th>السعر</th><th>المخزون</th><th>إجراء</th></tr></thead>
+  <table><thead><tr><th>صورة</th><th>المنتج</th><th>السعر</th><th>المخزون</th><th>إجراء</th></tr></thead>
   <tbody>${DB.products.map(p=>`<tr>
+    <td>
+      ${p.image && String(p.image).startsWith('http') ? `<img class="prod-thumb" src="${esc(p.image)}">` : '<div class="prod-thumb"></div>'}
+      <input type="file" class="row-file" accept="image/*" onchange="changeProductImage(${p.id}, this.files[0], this)">
+    </td>
     <td>${esc(p.name)}</td><td>${fmt(p.price)}</td>
     <td class="${p.stock<=5?'low-flag':''}">${p.stock}</td>
     <td><button class="mini-btn mini-red" onclick="deleteProduct(${p.id})">حذف</button></td>
-  </tr>`).join('') || '<tr><td colspan="4">لا توجد منتجات</td></tr>'}</tbody></table>`;
+  </tr>`).join('') || '<tr><td colspan="5">لا توجد منتجات</td></tr>'}</tbody></table>`;
 }
+
+function bindProductsEvents(){
+  document.getElementById('addProductBtn')?.addEventListener('click', addProduct);
+}
+
 async function addProduct(){
   const name = document.getElementById('npName').value.trim();
   const desc = document.getElementById('npDesc').value.trim();
   const price = parseFloat(document.getElementById('npPrice').value);
   const stock = parseInt(document.getElementById('npStock').value);
+  const fileInput = document.getElementById('npImageFile');
+  const statusEl = document.getElementById('npUploadStatus');
+  const btn = document.getElementById('addProductBtn');
   if(!name||!price||!stock){ alert('أكمل جميع الحقول'); return; }
+
+  btn.disabled = true;
+  let imageUrl = '';
+  if(fileInput.files && fileInput.files[0]){
+    statusEl.className = 'upload-status';
+    statusEl.style.display='block';
+    statusEl.textContent = 'جاري رفع الصورة...';
+    const uploadRes = await uploadImageFile(fileInput.files[0]);
+    if(uploadRes.ok){
+      imageUrl = uploadRes.url;
+      statusEl.className = 'upload-status ok';
+      statusEl.textContent = 'تم رفع الصورة ✅';
+    } else {
+      statusEl.className = 'upload-status err';
+      statusEl.textContent = 'تعذّر رفع الصورة (' + (uploadRes.error||'') + ') — سيُضاف المنتج بدون صورة.';
+    }
+  }
+
   const palette = ['#B24B32','#1F5F58','#D9A441','#5B3A5C','#6E7F52'];
   const colors = [palette[Math.floor(Math.random()*5)]];
-  const res = await callApi('addProduct', {name, desc, price, stock, colors, top:'linear-gradient(120deg,#332E28,#201D1A)'});
+  const res = await callApi('addProduct', {name, desc, price, stock, colors, image:imageUrl, top:'linear-gradient(120deg,#332E28,#201D1A)'});
+  btn.disabled = false;
   if(res.ok){ await refreshAll(); switchTab('products'); } else alert('فشلت الإضافة');
 }
+
+async function changeProductImage(id, file, inputEl){
+  if(!file) return;
+  inputEl.disabled = true;
+  const uploadRes = await uploadImageFile(file);
+  if(uploadRes.ok){
+    const res = await callApi('updateProduct', {id, image: uploadRes.url});
+    if(res.ok){ await refreshAll(); switchTab('products'); return; }
+  }
+  inputEl.disabled = false;
+  alert('تعذّر رفع الصورة: ' + (uploadRes.error||'خطأ غير معروف'));
+}
+
 async function deleteProduct(id){
   if(!confirm('تأكيد حذف هذا المنتج؟')) return;
   const res = await callApi('deleteProduct', {id});
@@ -231,12 +303,14 @@ async function updateStock(id){
 function renderGallery(){
   return `<div class="admin-form">
     <h3 style="margin-bottom:12px;">إضافة صورة للمعرض</h3>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:10px;">استخدم رابط صورة مباشر (من Google Drive بصيغة مشاركة عامة، أو Imgur، أو أي استضافة صور).</p>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:10px;">ارفع صورة من جهازك مباشرة، أو أدخل رابط صورة جاهز إن كان لديك.</p>
     <div class="row">
-      <input id="ngTitle" placeholder="عنوان الصورة (مثال: صالون بلمسة ذهبية)">
-      <input id="ngImage" placeholder="رابط الصورة المباشر (https://...)">
-      <button class="btn btn-brass" onclick="addGallery()">إضافة للمعرض</button>
+      <div><span class="field-label">عنوان الصورة</span><input id="ngTitle" placeholder="مثال: صالون بلمسة ذهبية"></div>
+      <div><span class="field-label">رفع من الجهاز</span><input type="file" id="ngImageFile" accept="image/*"></div>
+      <div><span class="field-label">أو رابط صورة مباشر</span><input id="ngImage" placeholder="https://..."></div>
+      <button class="btn btn-brass" id="addGalleryBtn">إضافة للمعرض</button>
     </div>
+    <p id="ngUploadStatus" class="upload-status"></p>
   </div>
   <table><thead><tr><th>معاينة</th><th>العنوان</th><th>إجراء</th></tr></thead>
   <tbody>${DB.gallery.map(g=>`<tr>
@@ -245,13 +319,44 @@ function renderGallery(){
     <td><button class="mini-btn mini-red" onclick="deleteGallery(${g.id})">حذف</button></td>
   </tr>`).join('') || '<tr><td colspan="3">لا توجد صور بعد</td></tr>'}</tbody></table>`;
 }
+
+function bindGalleryEvents(){
+  document.getElementById('addGalleryBtn')?.addEventListener('click', addGallery);
+}
+
 async function addGallery(){
   const title = document.getElementById('ngTitle').value.trim();
-  const image = document.getElementById('ngImage').value.trim();
-  if(!title || !image){ alert('أكمل العنوان ورابط الصورة'); return; }
+  const urlField = document.getElementById('ngImage').value.trim();
+  const fileInput = document.getElementById('ngImageFile');
+  const statusEl = document.getElementById('ngUploadStatus');
+  const btn = document.getElementById('addGalleryBtn');
+  if(!title){ alert('أدخل عنوان الصورة'); return; }
+  if(!urlField && !(fileInput.files && fileInput.files[0])){ alert('ارفع صورة من جهازك أو أدخل رابطًا'); return; }
+
+  btn.disabled = true;
+  let image = urlField;
+  if(fileInput.files && fileInput.files[0]){
+    statusEl.className = 'upload-status';
+    statusEl.style.display='block';
+    statusEl.textContent = 'جاري رفع الصورة...';
+    const uploadRes = await uploadImageFile(fileInput.files[0]);
+    if(uploadRes.ok){
+      image = uploadRes.url;
+      statusEl.className = 'upload-status ok';
+      statusEl.textContent = 'تم رفع الصورة ✅';
+    } else {
+      statusEl.className = 'upload-status err';
+      statusEl.textContent = 'تعذّر رفع الصورة: ' + (uploadRes.error||'خطأ غير معروف');
+      btn.disabled = false;
+      return;
+    }
+  }
+
   const res = await callApi('addGallery', {title, image});
+  btn.disabled = false;
   if(res.ok){ await refreshAll(); switchTab('gallery'); } else alert('فشلت الإضافة');
 }
+
 async function deleteGallery(id){
   if(!confirm('حذف هذه الصورة من المعرض؟')) return;
   const res = await callApi('deleteGallery', {id});
