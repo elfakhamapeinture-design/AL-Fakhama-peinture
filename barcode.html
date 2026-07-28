@@ -127,7 +127,7 @@
         <h2>الاتصال بجوجل شيت</h2>
         <label class="field">
           <span>رابط الويب أب (Web App URL)</span>
-          <input type="text" id="apiUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec" />
+          <input type="text" id="apiUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec" value="https://script.google.com/macros/s/AKfycbxBIh_dimTzoV2KWpFoTzil0M6VbgPITsuhRzvfoRGMq_3GVMjrR1Xxh_5tKI_e3YnG8w/exec" />
         </label>
         <div class="btn-row">
           <button class="btn-primary" onclick="loadProducts()">تحميل المنتجات</button>
@@ -415,6 +415,9 @@ function doPrint(){
 }
 
 renderQueue();
+if(document.getElementById('apiUrl').value.trim()){
+  loadProducts();
+}
 </script>
 
 </body>
