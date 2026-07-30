@@ -97,58 +97,62 @@
     display:none;
 }
 
-@media print {
+@media print{
 
-  @page{
-    size:50mm 30mm;
-    margin:0;
-  }
+    @page{
+        size:50mm 30mm;
+        margin:0;
+    }
 
-  html,
-  body{
-    width:50mm;
-    height:30mm;
-    margin:0;
-    padding:0;
-    overflow:hidden;
-    background:#fff;
-  }
+    html,
+    body{
+        width:50mm;
+        height:30mm;
+        margin:0;
+        padding:0;
+        overflow:hidden;
+    }
 
-  body *{
-    visibility:hidden !important;
-  }
+    body *{
+        visibility:hidden !important;
+    }
 
-  #printArea,
-  #printArea *{
-    visibility:visible !important;
-  }
+    #printArea,
+    #printArea *{
+        visibility:visible !important;
+    }
 
-  #printArea{
-    display:block !important;
-    position:fixed;
-    left:0;
-    top:0;
-    width:50mm;
-    margin:0;
-    padding:0;
-  }
+    #printArea{
+        display:block !important;
+        position:fixed;
+        left:0;
+        top:0;
+        margin:0;
+        padding:0;
+        width:50mm;
+    }
 
-  .print-label{
-    width:50mm !important;
-    height:30mm !important;
-    margin:0;
-    padding:0;
-    page-break-after:always;
-    break-after:page;
-    page-break-inside:avoid;
-    overflow:hidden;
-    background:#fff;
-  }
+    .print-label{
+        width:50mm !important;
+        height:30mm !important;
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        page-break-after:always;
+        break-after:page;
+        page-break-inside:avoid;
+        overflow:hidden;
 
-  .print-label:last-child{
-    page-break-after:auto;
-    break-after:auto;
-  }
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .print-label:last-child{
+        page-break-after:auto;
+        break-after:auto;
+    }
 }
 </style>
 </head>
