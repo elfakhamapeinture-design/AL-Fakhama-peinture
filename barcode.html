@@ -395,13 +395,19 @@ function buildPrintArea(){
   });
 }
 
-function doPrint(){
-  if(queue.length === 0) return;
-  renderPreview();
-  buildPrintArea();
-  setTimeout(()=>window.print(), 60);
-}
+function doPrint() {
+  if (queue.length === 0) return;
 
+  buildPrintArea();
+
+  setTimeout(() => {
+    window.print();
+
+    setTimeout(() => {
+      document.getElementById("printArea").innerHTML = "";
+    }, 500);
+  }, 100);
+}
 renderQueue();
 loadProducts();
 </script>
