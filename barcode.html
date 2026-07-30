@@ -93,16 +93,63 @@
   .qty-note{text-align:center;margin-top:14px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
 
   #printArea{display:none;}
-  @media print{
-    body *{visibility:hidden;}
-    #printArea, #printArea *{visibility:visible;}
-    #printArea{display:flex !important;flex-wrap:wrap;position:absolute;top:0;left:0;gap:0;}
-    .print-label{background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;page-break-inside:avoid;}
-    .print-label .lbl-shop{font-weight:700;text-align:center;color:#3a3a36;width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
-    .print-label .lbl-name{font-weight:700;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;width:100%;}
-    .print-label svg{display:block;}
-    @page{ margin:0; }
+ #printArea{
+    display:none;
+}
+
+@media print {
+
+  @page{
+    size:50mm 30mm;
+    margin:0;
   }
+
+  html,
+  body{
+    width:50mm;
+    height:30mm;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    background:#fff;
+  }
+
+  body *{
+    visibility:hidden !important;
+  }
+
+  #printArea,
+  #printArea *{
+    visibility:visible !important;
+  }
+
+  #printArea{
+    display:block !important;
+    position:fixed;
+    left:0;
+    top:0;
+    width:50mm;
+    margin:0;
+    padding:0;
+  }
+
+  .print-label{
+    width:50mm !important;
+    height:30mm !important;
+    margin:0;
+    padding:0;
+    page-break-after:always;
+    break-after:page;
+    page-break-inside:avoid;
+    overflow:hidden;
+    background:#fff;
+  }
+
+  .print-label:last-child{
+    page-break-after:auto;
+    break-after:auto;
+  }
+}
 </style>
 </head>
 <body>
