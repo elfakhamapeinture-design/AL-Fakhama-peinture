@@ -98,6 +98,11 @@
     display:none;
 }
 
+/* ===========================
+   PRINT LABEL 40x20 mm
+   XPrinter XP-350B
+   =========================== */
+
 @media print {
 
     @page {
@@ -112,24 +117,16 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
-
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        color-adjust: exact;
+        background: #fff !important;
+        color: #000 !important;
     }
 
-    * {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        text-rendering: geometricPrecision;
-        image-rendering: crisp-edges;
-        image-rendering: pixelated;
-    }
-
+    /* إخفاء كل عناصر الصفحة */
     body * {
         visibility: hidden !important;
     }
 
+    /* إظهار منطقة الطباعة فقط */
     #printArea,
     #printArea * {
         visibility: visible !important;
@@ -143,16 +140,24 @@
         height: 20mm;
         margin: 0;
         padding: 0;
+        background: #fff;
     }
 
+    /* بطاقة الملصق */
     .print-label {
+
         width: 40mm;
         height: 20mm;
 
-        margin: 0;
+        box-sizing: border-box;
+
         padding: 1mm;
 
-        box-sizing: border-box;
+        margin: 0;
+
+        background: #fff;
+        color: #000;
+
         overflow: hidden;
 
         display: flex;
@@ -161,50 +166,79 @@
         align-items: center;
 
         font-family: Arial, Tahoma, sans-serif;
-        color: #000;
-        background: #fff;
+        font-weight: bold;
 
         page-break-after: always;
-        break-after: page;
         page-break-inside: avoid;
+        break-after: page;
     }
 
-    .company-name {
-        font-size: 14px;
-        font-weight: 700;
-        line-height: 1.1;
-        margin-bottom: 1mm;
+    .print-label:last-child{
+        page-break-after:auto;
+        break-after:auto;
     }
 
-    .product-name {
-        font-size: 13px;
-        font-weight: 700;
-        line-height: 1.1;
-        margin-bottom: 1mm;
+    /* اسم الشركة */
+    .company{
+        font-size:14px;
+        font-weight:700;
+        line-height:1.1;
+        margin-bottom:1mm;
+        text-align:center;
     }
 
-    .barcode {
-        width: 34mm;
-        height: auto;
-        margin: 1mm 0;
+    /* اسم المنتج */
+    .product{
+        font-size:12px;
+        font-weight:700;
+        line-height:1.1;
+        margin-bottom:1mm;
+        text-align:center;
     }
 
-    .barcode-text {
-        font-size: 12px;
-        font-weight: bold;
-        letter-spacing: 0.5px;
+    /* الباركود */
+    svg{
+        width:34mm !important;
+        height:8mm !important;
+        display:block;
     }
 
-    .price {
-        font-size: 15px;
-        font-weight: bold;
-        margin-top: 1mm;
+    canvas{
+        width:34mm !important;
+        height:8mm !important;
+        display:block;
     }
 
-    .print-label:last-child {
-        page-break-after: auto;
-        break-after: auto;
+    /* رقم الباركود */
+    .barcode-text{
+        font-size:10px;
+        font-weight:bold;
+        letter-spacing:0.4mm;
+        margin-top:0.5mm;
     }
+
+    /* السعر */
+    .price{
+        font-size:15px;
+        font-weight:700;
+        margin-top:1mm;
+    }
+
+    img{
+        max-width:100%;
+        max-height:100%;
+    }
+
+    table{
+        border-collapse:collapse;
+    }
+
+    *{
+        box-shadow:none !important;
+        text-shadow:none !important;
+        filter:none !important;
+    }
+
 }
 </style>
 </head>
