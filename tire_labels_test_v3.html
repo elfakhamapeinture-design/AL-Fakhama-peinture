@@ -98,61 +98,63 @@
     display:none;
 }
 
-@media print{
+@media print {
 
-    @page{
-        size:40mm 20mm;
-        margin:0;
+    @page {
+        size: 40mm 20mm landscape;
+        margin: 0;
     }
 
     html,
-    body{
-        width:40mm;
-        height:20mm;
-        margin:0;
-        padding:0;
-        overflow:hidden;
+    body {
+        width: 40mm;
+        height: 20mm;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
     }
 
-    body *{
-        visibility:hidden !important;
+    body * {
+        visibility: hidden !important;
     }
 
     #printArea,
-    #printArea *{
-        visibility:visible !important;
+    #printArea * {
+        visibility: visible !important;
     }
 
-    #printArea{
-        display:block !important;
-        position:fixed;
-        left:0;
-        top:0;
-        margin:0;
-        padding:0;
-        width:40mm;
+    #printArea {
+        display: block !important;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 40mm;
+        height: 20mm;
+        margin: 0;
+        padding: 0;
     }
 
-    .print-label{
-        width:40mm !important;
-        height:20mm !important;
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-        page-break-after:always;
-        break-after:page;
-        page-break-inside:avoid;
-        overflow:hidden;
+    .print-label {
+        width: 40mm !important;
+        height: 20mm !important;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        overflow: hidden;
 
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        page-break-after: always;
+        break-after: page;
+        page-break-inside: avoid;
     }
 
-    .print-label:last-child{
-        page-break-after:auto;
-        break-after:auto;
+    .print-label:last-child {
+        page-break-after: auto;
+        break-after: auto;
     }
 }
 </style>
