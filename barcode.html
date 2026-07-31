@@ -286,7 +286,10 @@ async function loadProducts(){
   errEl.style.display = 'none';
   connText.textContent = 'جاري التحميل...';
   try{
-    const res = await fetch(url, {method:'GET'});
+   const res = await fetch(url + (url.includes('?') ? '&' : '?') + '_=' + Date.now(), {
+  method: 'GET',
+  cache: 'no-store'
+});
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if(!data || !Array.isArray(data.products)) throw new Error('الاستجابة لا تحتوي على قائمة منتجات');
