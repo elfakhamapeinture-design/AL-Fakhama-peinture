@@ -24,6 +24,8 @@
   .brand h1{font-size:19px;margin:0;font-weight:900;}
   .brand p{margin:2px 0 0;font-size:12.5px;color:var(--muted);}
   .status{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--panel);border:1px solid var(--line);padding:8px 14px;border-radius:999px;color:var(--muted);}
+  .nav-btn{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--amber);background:var(--panel);border:1px solid var(--line);padding:8px 14px;border-radius:999px;text-decoration:none;transition:border-color .15s;}
+  .nav-btn:hover{border-color:var(--amber);}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px var(--mint);}
   .dot.off{background:var(--danger);box-shadow:0 0 8px var(--danger);}
 
@@ -258,7 +260,10 @@
         <p>مرتبطة بجوجل شيت المتجر — بدون سعر — جاهزة لطابعة XPRINTER الحرارية</p>
       </div>
     </div>
-    <div class="status"><span class="dot off" id="connDot"></span><span id="connText">غير متصل بالشيت</span></div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="admin.html" class="nav-btn">⬅ لوحة الإدارة</a>
+      <div class="status"><span class="dot off" id="connDot"></span><span id="connText">غير متصل بالشيت</span></div>
+    </div>
   </header>
 
   <div class="grid">
@@ -641,8 +646,22 @@ function doPrintText(){
   }, 100);
 }
 
+/* ---------- استقبال منتج جاهز من لوحة الإدارة عبر رابط الصفحة ---------- */
+function initFromUrlParams(){
+  const params = new URLSearchParams(window.location.search);
+  const barcode = params.get('barcode');
+  const name = params.get('name') || '';
+  if(barcode){
+    queue.push({ id: 'url-' + barcode, name, barcode, qty: 1 });
+    document.getElementById('productsPanel').style.display = 'block';
+    document.getElementById('queuePanel').style.display = 'block';
+    renderQueue();
+  }
+}
+
 renderQueue();
 loadProducts();
+initFromUrlParams();
 </script>
 
 </body>
