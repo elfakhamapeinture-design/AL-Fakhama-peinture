@@ -213,6 +213,15 @@
           <span>اكتب النص الذي تريد طباعته</span>
           <textarea id="freeText" rows="4" placeholder="مثال: عرض خاص — أو أي ملاحظة تريد كتابتها على الملصق..." oninput="renderTextPreviewIfActive()"></textarea>
         </label>
+        <label class="field" style="margin-bottom:12px;">
+          <span>اتجاه طباعة النص</span>
+          <select id="rotText" onchange="saveOrient();previewText()">
+            <option value="0" selected>أفقي عادي</option>
+            <option value="90">تدوير 90° (مع عقارب الساعة)</option>
+            <option value="180">تدوير 180°</option>
+            <option value="270">تدوير 270° (عكس عقارب الساعة)</option>
+          </select>
+        </label>
         <div class="btn-row">
           <button class="btn-primary" onclick="doPrintText()">🖨 طباعة النص كملصق</button>
           <button class="btn-ghost" onclick="previewText()">👁 معاينة</button>
@@ -252,10 +261,19 @@
           </label>
         </div>
         <label class="field" style="margin:14px 0 0;">
-          <span>اتجاه الطباعة</span>
+          <span>اتجاه الصفحة</span>
           <select id="orient" onchange="saveOrient();renderPreview()">
             <option value="landscape" selected>أفقي (عرضي)</option>
             <option value="portrait">عمودي (طولي)</option>
+          </select>
+        </label>
+        <label class="field" style="margin:14px 0 0;">
+          <span>تدوير المحتوى عند الطباعة</span>
+          <select id="rot" onchange="saveOrient();renderPreview()">
+            <option value="0" selected>بدون تدوير</option>
+            <option value="90">تدوير 90° (مع عقارب الساعة)</option>
+            <option value="180">تدوير 180°</option>
+            <option value="270">تدوير 270° (عكس عقارب الساعة)</option>
           </select>
         </label>
         <div class="btn-row" style="margin-top:14px;">
@@ -314,11 +332,35 @@ function getDims(){
   return portrait ? {w:small, h:big, roll:false, portrait:true}
                   : {w:big, h:small, roll:false, portrait:false};
 }
-function saveOrient(){ try{ localStorage.setItem('labelOrient', document.getElementById('orient').value); }catch(e){} }
-function restoreOrient(){ try{ const v = localStorage.getItem('labelOrient'); if(v) document.getElementById('orient').value = v; }catch(e){} }
-function updateSizeTag(){
-  const d = getDims();
-  document.getElementById('sizeTag').textContent = d.roll ? `${d.w}mm (مستمر)` : `${d.w}×${d.h}mm — ${d.portrait ? 'عمودي' : 'أفقي'}`;
+function saveOrient(){ try{ localStorage.setItem('labelOrient', document.getElementById('orient').value); localStorage.setItem('labelRot', document.getElementById('rot').value); localStorage.setItem('labelRotText', document.getElementById('rotText').value); }catch(e){} }
+function restoreOrient(){ try{ const v = localStorage.getItem('labelOrient'); if(v) document.getElementById('orient').value = v; const r = localStorage.getItem('labelRot'); if(r) document.getElementById('rot').value = r; const rt = localStorage.getItem('labelRotText'); if(rt) document.getElementById('rotText').value = rt; }catch(e){} }
+function getRot(id){ return parseInt(document.getElementById(id || 'rot').value, 10) || 0; }
+/* أبعاد تصميم الملصق قبل التدوير: عند 90°/270° يُصمَّم الملصق بأبعاد مقلوبة ثم يُدار ليملأ الصفحة */
+function getDesignDims(rotArg){
+  const d = getDims(), rot = (rotArg === undefined) ? getRot() : rotArg;
+  return (rot === 90 || rot === 270) ? {w:d.h, h:d.w, roll:d.roll, rot} : {w:d.w, h:d.h, roll:d.roll, rot};
+}
+function updateSizeTag(rotArg){
+  const d = getDims(), rot = (rotArg === undefined) ? getRot() : rotArg;
+  const base = d.roll ? `${d.w}mm (مستمر)` : `${d.w}×${d.h}mm — ${d.portrait ? 'عمودي' : 'أفقي'}`;
+  document.getElementById('sizeTag').textContent = rot ? `${base} — تدوير ${rot}°` : base;
+}
+/* يضيف الملصق إلى منطقة الطباعة مع التدوير المختار؛ build(dw,dh) يبني الملصق بأبعاد التصميم */
+function appendLabel(area, wMm, hMm, build, rotArg){
+  const rot = (rotArg === undefined) ? getRot() : rotArg;
+  if(!rot){ area.appendChild(build(wMm, hMm)); return; }
+  const swap = (rot === 90 || rot === 270);
+  const lbl = build(swap ? hMm : wMm, swap ? wMm : hMm);
+  lbl.style.position = 'absolute'; lbl.style.left = '0'; lbl.style.top = '0';
+  lbl.style.pageBreakAfter = 'auto'; lbl.style.breakAfter = 'auto';
+  if(rot === 90){ lbl.style.transformOrigin = '0 0'; lbl.style.transform = `translate(${wMm}mm,0) rotate(90deg)`; }
+  else if(rot === 270){ lbl.style.transformOrigin = '0 0'; lbl.style.transform = `translate(0,${hMm}mm) rotate(270deg)`; }
+  else { lbl.style.transformOrigin = '50% 50%'; lbl.style.transform = 'rotate(180deg)'; }
+  const wrap = document.createElement('div');
+  wrap.className = 'rot-wrap';
+  wrap.style.cssText = `position:relative;width:${wMm}mm;height:${hMm}mm;overflow:hidden;page-break-after:always;break-after:page;page-break-inside:avoid;`;
+  wrap.appendChild(lbl);
+  area.appendChild(wrap);
 }
 
 const SHEET_API_URL = "https://script.google.com/macros/s/AKfycby0gplYn89nQJHFdy4QfmD6YybWLOSbP5UftDjIMUAYpZnOXdhUQ1sMzYj4Vw3mIBNo/exec";
@@ -468,8 +510,9 @@ function renderPreview(){
   pShop.style.fontSize = settings.fsShop + 'mm';
 
   const sheet = document.getElementById('labelSheet');
-  const pxW = mmToPx(dm.w);
-  const pxH = dm.roll ? mmToPx(40) : mmToPx(dm.h);
+  const dd = getDesignDims();
+  const pxW = mmToPx(dd.w);
+  const pxH = (dm.roll && dd.rot % 180 === 0) ? mmToPx(40) : mmToPx(dd.h);
   sheet.style.width = pxW + 'px';
   sheet.style.height = pxH + 'px';
 
@@ -508,6 +551,7 @@ function setDynamicPageSize(wMm, hMm){
 @media print{
   html,body{ width:${wMm}mm !important; height:${hMm}mm !important; }
   #printArea{ width:${wMm}mm !important; height:${hMm}mm !important; }
+  .rot-wrap:last-child{ page-break-after:auto; break-after:auto; }
 }`;
 }
 
@@ -520,12 +564,11 @@ function buildPrintArea(){
   const _d = getDims(), wMm = _d.w, hMm = _d.h;
   setDynamicPageSize(wMm, hMm);
 
-  queue.forEach(item => {
-    for(let i=0;i<item.qty;i++){
+  const buildLabel = (item) => (dw, dh) => {
       const lbl = document.createElement('div');
       lbl.className = 'print-label';
-      lbl.style.width = wMm + 'mm';
-      lbl.style.height = hMm + 'mm';
+      lbl.style.width = dw + 'mm';
+      lbl.style.height = dh + 'mm';
       lbl.style.padding = '1.2mm';
 
       const shopEl = document.createElement('div');
@@ -548,10 +591,10 @@ function buildPrintArea(){
 
       const svgNS = "http://www.w3.org/2000/svg";
       const svg = document.createElementNS(svgNS, "svg");
-      safeBarcode(svg, item.barcode, mmToPx(wMm), settings.fsBarcodeNum);
-      if(_d.portrait){
-        // في الوضع العمودي العرض صغير: نضبط عرض الباركود ليناسب الملصق
-        svg.style.setProperty('width', (wMm - 4) + 'mm', 'important');
+      safeBarcode(svg, item.barcode, mmToPx(dw), settings.fsBarcodeNum);
+      if(dw < 40){
+        // عرض الملصق صغير (عمودي أو مدوَّر): نضبط عرض الباركود ليناسبه
+        svg.style.setProperty('width', (dw - 4) + 'mm', 'important');
         svg.style.setProperty('height', '8mm', 'important');
       }
       lbl.appendChild(svg);
@@ -565,8 +608,12 @@ function buildPrintArea(){
         priceEl.textContent = formatPrice(item.price);
         lbl.appendChild(priceEl);
       }
+      return lbl;
+  };
 
-      area.appendChild(lbl);
+  queue.forEach(item => {
+    for(let i=0;i<item.qty;i++){
+      appendLabel(area, wMm, hMm, buildLabel(item));
     }
   });
 }
@@ -615,13 +662,15 @@ function buildTextLabelEl(wMm, hMm, text){
 function previewText(){
   const text = document.getElementById('freeText').value.trim();
   if(!text) return;
-  updateSizeTag();
+  const tr = getRot('rotText');
+  updateSizeTag(tr);
   const dm = getDims();
 
   const settings = getSettings();
   const sheet = document.getElementById('labelSheet');
-  const pxW = mmToPx(dm.w);
-  const pxH = dm.roll ? mmToPx(40) : mmToPx(dm.h);
+  const dd = getDesignDims(tr);
+  const pxW = mmToPx(dd.w);
+  const pxH = (dm.roll && dd.rot % 180 === 0) ? mmToPx(40) : mmToPx(dd.h);
   sheet.style.width = pxW + 'px';
   sheet.style.height = pxH + 'px';
 
@@ -646,7 +695,7 @@ function doPrintText(){
 
   const area = document.getElementById('printArea');
   area.innerHTML = '';
-  area.appendChild(buildTextLabelEl(wMm, hMm, text));
+  appendLabel(area, wMm, hMm, (dw, dh) => buildTextLabelEl(dw, dh, text), getRot('rotText'));
 
   setTimeout(() => {
     window.print();
